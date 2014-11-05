@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+
+
+    </h:head>
+    <h:body>
+        <ui:composition  template="/templates/commonlayout.xhtml">
+            <ui:define name="content">
+
+                <p:dialog  id="dlgWindow" closable="false" showEffect="highlight"  header="#{userAuthoritiesController.dlgTitle}"  modal="true" position="center,center" widgetVar="dlgWindow" >
+                    <h:form id="hello">
+
+                        <p:messages id="msg" globalOnly="false" showDetail="true"  autoUpdate="true"/>
+                        <h:panelGrid columns="2" >  
+
+
+                            <p:outputLabel for="userName" value="User" />
+
+
+                            <p:selectOneMenu id="userName" filter="true" required="true"  
+                                             effect="fade" filterMatchMode="contains" 
+                                             value="#{userAuthoritiesController.currentElement.appUser}" 
+                                             converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem  itemLabel="SELECT..." itemValue="" />
+                                <f:selectItems value="#{userController.objList}" var="p" itemLabel="#{p.userFullName}" itemValue="#{p}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="userRole" value="Role" />
+                            <p:selectOneMenu id="userRole" required="true" value="#{userAuthoritiesController.currentElement.authority}">
+                                <f:selectItem itemLabel="SELECT..." itemValue=""/>
+                                <f:selectItem itemLabel="Supervisor" itemValue="ROLE_SUPERVISOR"/>
+                                <f:selectItem itemLabel="Administrator" itemValue="ROLE_ADMIN"/>
+
+                            </p:selectOneMenu>
+
+
+
+
+
+                            <h:panelGroup />
+
+                            <p:column>
+                                <p:commandButton value="Save"  process="@form"
+                                                 update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"  
+                                                 actionListener="#{userAuthoritiesController.doSave()}" />
+                                <p:spacer width="5"/>
+                                <p:commandButton value="Cancel" process="@this" actionListener="#{userAuthoritiesController.doCancel()}" 
+                                                 update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"           />
+
+                            </p:column>
+
+
+                        </h:panelGrid>
+                    </h:form>
+
+                </p:dialog>
+
+
+
+
+
+
+                <h:form id="accountGroupForm">
+                    <p:messages  id="info" closable="true" autoUpdate="true" />
+                    <h:panelGrid id="tableAccountGroup"  width="50%" columns="1" >
+                        <h:panelGroup>
+
+                            <p:commandLink value="New User Authority"  process="@this" update=":dlgWindow" actionListener="#{userAuthoritiesController.doNew()}" >
+
+
+
+                            </p:commandLink>
+
+                        </h:panelGroup>
+                        <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{userAuthoritiesController.objList}" draggableColumns="true"    var="usrAuthority"  >
+
+                            <p:column headerText="User Name">
+                                <!--h:outputText value="#{usrAuthority.appUser}">
+                                     <f:converter  converterId="usrConverter"/>
+                                
+                                </h:outputText>
+                                -->
+                                <p:commandLink value="#{usrAuthority.appUser.userFullName}"/>
+
+
+
+
+                            </p:column>
+
+                            <p:column headerText="Role">
+                                <p:commandLink value="#{usrAuthority.authority}"/>
+
+
+
+                            </p:column>
+
+                            <p:column>
+                                <h:panelGroup>
+                                    <p:commandLink value="Edit" process="@this" update=":dlgWindow" actionListener="#{userAuthoritiesController.doEdit(usrAuthority)}">
+
+
+
+                                    </p:commandLink>
+
+                                    <p:spacer width="10"/>
+                                    <p:commandLink value="Delete" process="@this" update="out,:accountGroupForm:info" actionListener="#{userAuthoritiesController.doDelete(usrAuthority.id)}"/>
+                                </h:panelGroup>
+
+                            </p:column>
+
+
+
+
+
+
+                        </p:dataTable>
+                    </h:panelGrid>
+
+
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

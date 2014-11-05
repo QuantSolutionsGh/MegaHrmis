@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+
+
+    </h:head>
+    <h:body>
+        <ui:composition   template="/templates/commonlayout.xhtml">
+            <ui:define name="content">
+
+                <h:form id="accountGroupForm">
+                    <p:messages  id="info" closable="true" autoUpdate="true" />
+                    <h:panelGrid id="tableAccountGroup"  width="25%" columns="2" >
+
+                        <p:outputLabel  for="employee" value="Employee" />
+
+                        <p:selectOneMenu id="employee" filter="true"   
+                                         effect="fade" filterMatchMode="contains"   
+                                         value="#{employeeXLeaveEntitlementXLeaveDetailsController.employee}"
+
+                                         converter="omnifaces.SelectItemsConverter" >
+                            <p:ajax update="daysOutstanding"  listener="#{employeeXLeaveEntitlementXLeaveDetailsController.calcOutstandingDays}"/>     
+
+                            <f:selectItem  itemLabel="SELECT..." itemValue="#{employeeXLeaveEntitlementXLeaveDetailsController.employee}" />
+                            <f:selectItems value="#{employeeController.objList}" var="p" itemLabel="#{p}" itemValue="#{p}"/>
+                        </p:selectOneMenu>
+
+                        <p:outputLabel  for="leavePeriod" value="Leave Period" />
+
+                        <p:selectOneMenu id="leavePeriod" filter="true"   
+                                         effect="fade" filterMatchMode="contains" 
+                                         value="#{employeeXLeaveEntitlementXLeaveDetailsController.leavePeriod}"
+
+                                         converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem  itemLabel="SELECT..." itemValue="#{employeeXLeaveEntitlementXLeaveDetailsController.leavePeriod}" />
+                            <f:selectItems value="#{leavePeriodsController.objList}" var="p" itemLabel="#{p}" itemValue="#{p}"/>
+                            <p:ajax update="daysOutstanding" listener="#{employeeXLeaveEntitlementXLeaveDetailsController.calcOutstandingDays}"  />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel  for="leaveType" value="Leave Type" />
+
+                        <p:selectOneMenu id="leaveType" filter="true"   
+                                         effect="fade" filterMatchMode="contains" 
+                                         value="#{employeeXLeaveEntitlementXLeaveDetailsController.leaveType}"
+
+                                         converter="omnifaces.SelectItemsConverter">
+                            <f:selectItem  itemLabel="SELECT..." itemValue="#{employeeXLeaveEntitlementXLeaveDetailsController.leaveType}" />
+                            <f:selectItems value="#{leaveTypesController.objList}" var="p" itemLabel="#{p}" itemValue="#{p}"/>
+                            <p:ajax update="daysOutstanding" listener="#{employeeXLeaveEntitlementXLeaveDetailsController.calcOutstandingDays}"  />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel  for="daysOutstanding" value="Outstanding Days" />
+                        <p:outputLabel id="daysOutstanding"  value="#{employeeXLeaveEntitlementXLeaveDetailsController.outstandingDays}" >
+
+                        </p:outputLabel>
+
+
+
+                        <p:outputLabel for="startDate" value="Start Date"/>
+                        <p:calendar id="startDate" disabledWeekends="true"  
+                                    value="#{employeeXLeaveEntitlementXLeaveDetailsController.startDate}"  pattern="dd-MM-yyyy"  required="true" >
+                            <f:convertDateTime pattern="dd-MM-yyyy"   />
+                            <p:ajax  event="dateSelect" update="noWorkingDays" listener="#{employeeXLeaveEntitlementXLeaveDetailsController.calcLeaveDays}"  />
+
+                        </p:calendar>
+
+
+
+                        <p:outputLabel for="endDate"  value="End Date"/>
+                        <p:calendar id="endDate" disabledWeekends="true"  
+                                 value="#{employeeXLeaveEntitlementXLeaveDetailsController.endDate}"    pattern="dd-MM-yyyy"   required="true" >
+                            <f:convertDateTime pattern="dd-MM-yyyy"     />
+                            <p:ajax event="dateSelect" update="noWorkingDays" listener="#{employeeXLeaveEntitlementXLeaveDetailsController.calcLeaveDays}"  />
+
+
+                        </p:calendar>
+
+
+                        <p:outputLabel for="noWorkingDays" value="Number of days" />
+                        <p:outputLabel id="noWorkingDays" value="#{employeeXLeaveEntitlementXLeaveDetailsController.leaveDays}"/>
+                        
+                        
+                        <p:outputLabel for="purpose" value="Purpose" />
+                        <p:inputTextarea id="purpose" value="#{employeeXLeaveEntitlementXLeaveDetailsController.reason}" />
+                        <h:panelGroup/>
+                        <p:commandButton value="Submit Request" actionListener="#{employeeXLeaveEntitlementXLeaveDetailsController.submitLeaveRequest}" />
+                        
+
+
+
+
+                    </h:panelGrid>
+
+
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

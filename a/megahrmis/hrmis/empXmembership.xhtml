@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head >
+        <title>Professional Membership Details</title>
+
+        <link href="/megahrmis/faces/templates/default.css" rel="stylesheet" type="text/css" />
+        <link href="/megahrmis/faces/templates/cssLayout.css" rel="stylesheet" type="text/css" />
+
+
+    </h:head>
+    <h:body>
+        
+        <h:form id="hello"  rendered="#{employeeXMembershipController.activeTab=='showEdit'}">
+
+
+
+            <p:messages id="msg" globalOnly="false" showDetail="true"  />
+
+            <h:panelGrid  columns="2" >  
+
+
+                <p:outputLabel for="membership" value="Membership" />
+
+
+                <p:selectOneMenu id="membership" filter="true"   
+                                 effect="fade" filterMatchMode="contains" 
+                                 value="#{employeeXMembershipController.currentElement.membership}" 
+                                 converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem  itemLabel="SELECT..." itemValue="" />
+                    <f:selectItems value="#{membershipController.objList}" var="p" itemLabel="#{p.membership}" itemValue="#{p}"/>
+                </p:selectOneMenu>
+                
+                 <p:outputLabel for="currency" value="Currency"/>
+                            <p:selectOneMenu id="currency"    required="true" value="#{employeeXMembershipController.currentElement.currency}">
+                                <f:selectItem itemLabel="Select..." itemValue=""/>
+                                <f:selectItem itemLabel="USD" itemValue="USD" />
+                                <f:selectItem itemLabel="GHS" itemValue="GHS"/>
+                                <f:selectItem itemLabel="GBP" itemValue="GBP"/>
+
+                            </p:selectOneMenu>
+                 <p:outputLabel for="amount" value="Subscription Amount" />
+                 <p:inputText id="amount" required="true" value="#{employeeXMembershipController.currentElement.amount}"/>
+
+
+                <h:panelGroup />
+
+                <p:column>
+                    <p:commandButton value="Save"  process="@form" update="@all"
+
+                                     actionListener="#{employeeXMembershipController.doSave()}" />
+                    <p:spacer width="5"/>
+                    <p:commandButton value="Cancel" process="@this" update="@all"  actionListener="#{employeeXMembershipController.doCancel()}" 
+                                     />
+
+                </p:column>
+
+
+            </h:panelGrid>
+
+
+
+        </h:form>
+
+
+
+        <h:form id="accountGroupForm" rendered="#{employeeXMembershipController.activeTab=='showAll'}"  >
+
+
+            <p:messages  id="info" closable="true"  />
+            <h:panelGrid id="tableAccountGroup"  width="100%" columns="1" >
+                <h:panelGroup>
+
+                    <p:commandLink value="New Membership"  process="@this" update="@all" actionListener="#{employeeXMembershipController.doNew()}" >
+
+
+
+                    </p:commandLink>
+
+                </h:panelGroup>
+                <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{employeeXMembershipController.objList}" draggableColumns="true"    var="m"  >
+
+                    <p:column headerText="Membership">
+                        <p:commandLink value="#{m.membership.membership}"/>                       
+
+
+
+                    </p:column>
+                    <p:column headerText="Subscription Currency">
+                        <p:commandLink value="#{m.currency}"/>                       
+
+
+
+                    </p:column>
+                    <p:column headerText="Subscription Amount">
+                        <p:commandLink value="#{m.amount}"/>                       
+
+
+
+                    </p:column>
+
+                    <p:column>
+                        <h:panelGroup>
+                            <p:commandLink value="Edit" process="@this" update="@all" actionListener="#{employeeXMembershipController.doEdit(m)}">
+
+
+
+                            </p:commandLink>
+
+                            <p:spacer width="10"/>
+                            <p:commandLink value="Delete" process="@this" update="@all" actionListener="#{employeeXMembershipController.doDelete(m.id)}"/>
+                        </h:panelGroup>
+
+                    </p:column>
+
+
+
+
+
+
+                </p:dataTable>
+            </h:panelGrid>
+
+
+
+
+
+        </h:form>
+
+    </h:body>
+</html>
+

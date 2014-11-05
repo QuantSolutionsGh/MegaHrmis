@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+
+
+    </h:head>
+    <h:body>
+        <ui:composition  template="/templates/commonlayout.xhtml">
+            <ui:define name="content">
+
+                <p:dialog  id="dlgAccGroup" closable="false" showEffect="highlight"  header="Add Account Group"  modal="true" position="center,center" widgetVar="dlgAccountGroup" >
+                    <script type="text/javascript" language="javascript">
+                        function handleComplete(xhr,status,args){
+                               
+                            if (args.saved){
+                                if (!args.validationFailed) {
+                            
+                                    dlgAccountGroup.hide(); 
+                                }
+                            }
+            
+                        }
+                    </script>
+                    <h:form id="hello">
+                        <p:messages id="msg" globalOnly="false" showDetail="true"  autoUpdate="true"/>
+                        <h:panelGrid columns="2" >  
+
+                            <p:outputLabel  for="groupId" value="Group ID" />
+
+                            <p:inputText id="groupId"  required="true"    value="#{accountGroupController.currAcountGroup.groupCode}" />
+
+                            <p:outputLabel for="groupDescription" value="Group Description" />
+                            <p:inputText id="groupDescription" required="true" value="#{accountGroupController.currAcountGroup.groupDescription}" />
+
+
+
+                            <h:panelGroup />
+
+                            <p:column>
+                                <p:commandButton value="Save"  process="@form"
+                                                 update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"  
+                                                 actionListener="#{accountGroupController.doSave}" />
+                                <p:spacer width="5"/>
+                                <p:commandButton value="Cancel" process="@this" actionListener="#{accountGroupController.doCancel()}" 
+                                       update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"           />
+
+                            </p:column>
+
+
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+
+
+
+
+                <h:form id="accountGroupForm">
+                    <p:messages  id="info" closable="true" autoUpdate="true" />
+                    <h:panelGrid id="tableAccountGroup"  width="50%" columns="1" >
+                        <h:panelGroup>
+
+                            <p:commandLink value="New Account Group"  process="@this"  actionListener="#{accountGroupController.doNew}" >
+
+
+
+                            </p:commandLink>
+
+                        </h:panelGroup>
+                        <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{accountGroupController.accountGroupList}" draggableColumns="true"    var="accountgroups"  >
+
+                            <p:column headerText="Group ID">
+                                <p:commandLink value="#{accountgroups.groupCode}"/>
+
+
+
+                            </p:column>
+                            <p:column headerText="Group Description">
+
+                                <h:outputText value="#{accountgroups.groupDescription}"></h:outputText>
+
+                            </p:column>
+                            <p:column>
+                                <h:panelGroup>
+                                    <p:commandLink value="Edit" process="@this" update=":hello" actionListener="#{accountGroupController.doEdit(accountgroups)}">
+
+
+
+                                    </p:commandLink>
+
+                                    <p:spacer width="10"/>
+                                    <p:commandLink value="Delete" process="@this" update="out,:accountGroupForm:info" actionListener="#{accountGroupController.doDelete(accountgroups)}"/>
+                                </h:panelGroup>
+
+                            </p:column>
+
+
+
+
+
+
+                        </p:dataTable>
+                    </h:panelGrid>
+
+
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

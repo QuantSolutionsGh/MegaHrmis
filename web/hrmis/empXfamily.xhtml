@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head >
+        <title>Family Details</title>
+
+        <link href="/megahrmis/faces/templates/default.css" rel="stylesheet" type="text/css" />
+        <link href="/megahrmis/faces/templates/cssLayout.css" rel="stylesheet" type="text/css" />
+
+
+    </h:head>
+    <h:body>
+
+        <h:form id="hello"  rendered="#{employeeXRelationshipController.activeTab=='showEdit'}">
+
+
+
+            <p:messages id="msg" globalOnly="false" showDetail="true"  />
+
+            <h:panelGrid  columns="2" >  
+
+                <p:outputLabel for="fullName" value="Name"/>
+                <p:inputText id="fullName" value="#{employeeXRelationshipController.currentElement.fullName}" required="true"/>
+
+                <p:outputLabel for="dob" value="Date Of Birth"/>
+                <p:calendar id="dob"  pattern="dd-MM-yyyy"  required="false" value="#{employeeXRelationshipController.currentElement.dob}">
+                    <f:convertDateTime pattern="dd-MM-yyyy"   />
+                </p:calendar>
+
+
+
+                <p:outputLabel for="relationship" value="Relationship" />
+
+
+                <p:selectOneMenu id="relationship" filter="true"   
+                                 effect="fade" filterMatchMode="contains" 
+                                 value="#{employeeXRelationshipController.currentElement.relationship}" 
+                                 converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem  itemLabel="SELECT..." itemValue="" />
+                    <f:selectItems value="#{relationshipController.objList}" var="p" itemLabel="#{p.relation}" itemValue="#{p}"/>
+                </p:selectOneMenu>
+
+
+                <p:outputLabel for="telephone" value="Telephone"/>
+                <p:inputText id="telephone" value="#{employeeXRelationshipController.currentElement.telephone}" />
+
+
+                <h:panelGroup />
+
+                <p:column>
+                    <p:commandButton value="Save"  process="@form" update="@all"
+
+                                     actionListener="#{employeeXRelationshipController.doSave()}" />
+                    <p:spacer width="5"/>
+                    <p:commandButton value="Cancel" process="@this" update="@all"  actionListener="#{employeeXRelationshipController.doCancel()}" 
+                                     />
+
+                </p:column>
+
+
+            </h:panelGrid>
+
+
+
+        </h:form>
+
+
+
+        <h:form id="accountGroupForm" rendered="#{employeeXRelationshipController.activeTab=='showAll'}"  >
+
+
+            <p:messages  id="info" closable="true"  />
+            <h:panelGrid id="tableAccountGroup"  width="100%" columns="1" >
+                <h:panelGroup>
+
+                    <p:commandLink value="New Dependant"  process="@this" update="@all" actionListener="#{employeeXRelationshipController.doNew()}" >
+
+
+
+                    </p:commandLink>
+
+                </h:panelGroup>
+                <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{employeeXRelationshipController.objList}" draggableColumns="true"    var="m"  >
+
+
+                    <p:column headerText="Name">
+                        <p:commandLink value="#{m.fullName}"/>                       
+
+
+
+                    </p:column>
+                    <p:column headerText="Date Of Birth">
+                        <p:commandLink value="#{m.dob}"/>                       
+
+
+
+                    </p:column>
+
+
+                    <p:column headerText="Relationship">
+                        <p:commandLink value="#{m.relationship.relation}"/>                       
+
+
+
+                    </p:column>
+                    <p:column headerText="Telephone">
+                        <p:commandLink value="#{m.telephone}"/>                       
+
+
+
+                    </p:column>
+
+                    <p:column>
+                        <h:panelGroup>
+                            <p:commandLink value="Edit" process="@this" update="@all" actionListener="#{employeeXRelationshipController.doEdit(m)}">
+
+
+
+                            </p:commandLink>
+
+                            <p:spacer width="10"/>
+                            <p:commandLink value="Delete" process="@this" update="@all" actionListener="#{employeeXRelationshipController.doDelete(m.id)}"/>
+                        </h:panelGroup>
+
+                    </p:column>
+
+
+
+
+
+
+                </p:dataTable>
+            </h:panelGrid>
+
+
+
+
+
+        </h:form>
+
+    </h:body>
+</html>
+

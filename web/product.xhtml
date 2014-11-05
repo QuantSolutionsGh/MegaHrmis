@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+
+
+    </h:head>
+    <h:body>
+        <ui:composition  template="/templates/commonlayout.xhtml">
+            <ui:define name="content">
+
+                <p:dialog  id="dialogGL" closable="false" showEffect="highlight"  header="Add / Edit"  modal="true" position="center,center" widgetVar="dlgGL" >
+
+                    <h:form id="hello">
+                        <p:messages id="msg" globalOnly="false"   autoUpdate="true"/>
+                        <h:panelGrid columns="2" >  
+
+                            <p:outputLabel  for="productCode" value="Product Code" />
+
+                            <p:inputText id="productCode"  required="true"    value="#{productController.curProduct.productCode}" />
+
+                            <p:outputLabel for="productDescription" value="Product Description" />
+                            <p:inputText id="productDescription" required="true" value="#{productController.curProduct.productDescription}" />
+                            <p:outputLabel for="productGroup" value="Product Group" />
+
+                            <p:selectOneMenu id="productGroup" filter="true" required="true"  
+                                             effect="fade" filterMatchMode="contains" 
+                                             value="#{productController.curProduct.productGroup}" 
+                                             converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem  itemLabel="SELECT PRODUCT GROUP" itemValue="" />
+                                <f:selectItems value="#{productGroupDao.findAll()}" var="p" itemLabel="#{p.prodGroupDescription}" itemValue="#{p}"/>
+                            </p:selectOneMenu>
+
+
+                            <h:panelGroup />
+
+                            <p:column>
+                                <p:commandButton value="Save"  process="@form"
+                                                 update=":glForm:out,msg,hello,:glForm:info"  
+                                                 actionListener="#{productController.doSave()}" />
+                                <p:spacer width="5"/>
+                                <p:commandButton value="Cancel" process="@this" actionListener="#{productController.doCancel()}" 
+                                                 update=":glForm:out,msg,hello,:glForm:info"           />
+
+                            </p:column>
+
+
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+
+
+
+
+                <h:form id="glForm">
+                    <p:messages  id="info" closable="true" autoUpdate="true" />
+                    <h:panelGrid id="tableGL"  width="50%" columns="1" >
+                        <h:panelGroup>
+
+                            <p:commandLink value="New Product Setup"  process="@this"  actionListener="#{productController.doNew()}" >
+
+
+
+                            </p:commandLink>
+
+                        </h:panelGroup>
+                        <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{productController.productList}" draggableColumns="true"    var="product"  >
+
+                            <p:column headerText="Product Code">
+                                <p:commandLink value="#{product.productCode}"/>
+
+
+
+                            </p:column>
+                            <p:column headerText="Product Description">
+
+                                <h:outputText value="#{product.productDescription}"></h:outputText>
+
+                            </p:column>
+                            
+                            <p:column headerText="Product Group ">
+
+                                <h:outputText value="#{product.productGroup}"></h:outputText>
+
+                            </p:column>
+
+
+
+                            <p:column>
+                                <h:panelGroup>
+                                    <p:commandLink value="Edit" process="@this" update=":hello"  actionListener="#{productController.doEdit(product)}">
+
+
+
+                                    </p:commandLink>
+
+                                    <p:spacer width="10"/>
+                                    <p:commandLink value="Delete" process="@this" update="out,:glForm:info" actionListener="#{productController.doDelete(product)}"/>
+                                </h:panelGroup>
+
+                            </p:column>
+
+
+
+
+
+
+                        </p:dataTable>
+                    </h:panelGrid>
+
+
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

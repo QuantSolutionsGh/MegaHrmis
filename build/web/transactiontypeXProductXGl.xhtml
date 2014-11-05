@@ -1,0 +1,166 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+
+
+    </h:head>
+    <h:body>
+        <ui:composition  template="/templates/commonlayout.xhtml">
+            <ui:define name="content">
+
+                <p:dialog  id="dlgAccGroup" closable="false" showEffect="highlight"  header="Add Account Group"  modal="true" position="center,center" widgetVar="dlgGL" >
+                    <script type="text/javascript" language="javascript">
+                        function handleComplete(xhr,status,args){
+                               
+                            if (args.saved){
+                                if (!args.validationFailed) {
+                            
+                                    dlgAccountGroup.hide(); 
+                                }
+                            }
+            
+                        }
+                    </script>
+                    <h:form id="hello">
+                        <p:messages id="msg" globalOnly="false" showDetail="true"  autoUpdate="true"/>
+                        <h:panelGrid columns="2" >  
+
+                            <p:outputLabel  for="transCode" value="Transaction Code" />
+
+                            <p:selectOneMenu id="transCode" filter="true" required="true"  
+                                             effect="fade" filterMatchMode="contains" 
+                                             value="#{transactionTypeXProductXGlAccountController.currTransGlSetup.transType}" 
+                                             converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem  itemLabel="SELECT TRANSACTION" itemValue="" />
+                                <f:selectItems value="#{transactionTypeController.transactionTypeList}" var="t" itemLabel="#{t.transactionDescription}" itemValue="#{t}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel  for="prodCode" value="Product Code" />
+
+                            <p:selectOneMenu id="prodCode" filter="true" required="true"  
+                                             effect="fade" filterMatchMode="contains" 
+                                             value="#{transactionTypeXProductXGlAccountController.currTransGlSetup.product}" 
+                                             converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem  itemLabel="SELECT PRODUCT" itemValue="" />
+                                <f:selectItems value="#{productController.productList}" var="p" itemLabel="#{p.productDescription}" itemValue="#{p}"/>
+                            </p:selectOneMenu>
+
+                            <p:outputLabel  for="accCodeBank" value="Bank Account Code" />
+
+                            <p:selectOneMenu id="accCodeBank" filter="true" required="true"  
+                                             effect="fade" filterMatchMode="contains" 
+                                             value="#{transactionTypeXProductXGlAccountController.currTransGlSetup.glBank}" 
+                                             converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem  itemLabel="SELECT GL ACCOUNT" itemValue="" />
+                                <f:selectItems value="#{chartOfAccountsController.chartOfAccountsList}" var="c" itemLabel="#{c.accountDescription}" itemValue="#{c}"/>
+                            </p:selectOneMenu>
+                            
+                              <p:outputLabel  for="accCodeCustomer" value="Customer Account Code" />
+
+                            <p:selectOneMenu id="accCodeCustomer" filter="true" required="true"  
+                                             effect="fade" filterMatchMode="contains" 
+                                             value="#{transactionTypeXProductXGlAccountController.currTransGlSetup.glCustomer}" 
+                                             converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem  itemLabel="SELECT GL ACCOUNT" itemValue="" />
+                                <f:selectItems value="#{chartOfAccountsController.chartOfAccountsList}" var="c" itemLabel="#{c.accountDescription}" itemValue="#{c}"/>
+                            </p:selectOneMenu>
+
+
+
+
+
+                            <h:panelGroup />
+
+                            <p:column>
+                                <p:commandButton value="Save"  process="@form"
+                                                 update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"  
+                                                 actionListener="#{transactionTypeXProductXGlAccountController.doSave()}" />
+                                <p:spacer width="5"/>
+                                <p:commandButton value="Cancel" process="@this" actionListener="#{transactionTypeXProductXGlAccountController.doCancel()}" 
+                                                 update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"           />
+
+                            </p:column>
+
+
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+
+
+
+
+                <h:form id="accountGroupForm">
+                    <p:messages  id="info" closable="true" autoUpdate="true" />
+                    <h:panelGrid id="tableAccountGroup"  width="50%" columns="1" >
+                        <h:panelGroup>
+
+                            <p:commandLink value="New Transaction Ledger Setup"  process="@this"  actionListener="#{transactionTypeXProductXGlAccountController.doNew()}" >
+
+
+
+                            </p:commandLink>
+
+                        </h:panelGroup>
+                        <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   
+                                     value ="#{transactionTypeXProductXGlAccountController.transGlSetupList}" draggableColumns="true"    var="tt"  >
+
+                            <p:column headerText="Transaction ">
+                                <p:commandLink value="#{tt.transType}"/>
+
+
+
+                            </p:column>
+                            <p:column headerText="Product">
+
+                                <h:outputText value="#{tt.product}"></h:outputText>
+
+                            </p:column>
+                            
+                            <p:column headerText="Bank GL">
+
+                                <h:outputText value="#{tt.glBank}"></h:outputText>
+
+                            </p:column>
+                            
+                            <p:column headerText="Customer GL">
+
+                                <h:outputText value="#{tt.glCustomer}"></h:outputText>
+
+                            </p:column>
+                            <p:column>
+                                <h:panelGroup>
+                                    <p:commandLink value="Edit" process="@this" update=":hello" actionListener="#{transactionTypeXProductXGlAccountController.doEdit(tt)}">
+
+
+
+                                    </p:commandLink>
+
+                                    <p:spacer width="10"/>
+                                    <p:commandLink value="Delete" process="@this" update="out,:accountGroupForm:info" actionListener="#{transactionTypeXProductXGlAccountController.doDelete(tt)}"/>
+                                </h:panelGroup>
+
+                            </p:column>
+
+
+
+
+
+
+                        </p:dataTable>
+                    </h:panelGrid>
+
+
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

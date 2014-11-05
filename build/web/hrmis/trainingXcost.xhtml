@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head >
+        <title>Training Cost</title>
+
+        <link href="/megahrmis/faces/templates/default.css" rel="stylesheet" type="text/css" />
+        <link href="/megahrmis/faces/templates/cssLayout.css" rel="stylesheet" type="text/css" />
+
+
+    </h:head>
+    <h:body>
+
+        <h:form id="hello"  rendered="#{trainingXItemCostController.activeTab=='showEdit'}">
+
+
+
+            <p:messages id="msg" globalOnly="false" showDetail="true"  />
+
+            <h:panelGrid  columns="2" >  
+
+                <p:outputLabel for="costType" value="Cost Type" />
+
+
+                <p:selectOneMenu id="costType" filter="true"   
+                                 effect="fade" filterMatchMode="contains" 
+                                 value="#{trainingXItemCostController.currentElement.trainingCostItem}" 
+                                 converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem  itemLabel="SELECT..." itemValue="" />
+                    <f:selectItems value="#{trainingCostItemController.objList}" var="e" itemLabel="#{e}" itemValue="#{e}"/>
+                </p:selectOneMenu>
+
+
+                <p:outputLabel for="itemDescription" value="Item Description" />
+                <p:inputText id="itemDescription" required="true" value="#{trainingXItemCostController.currentElement.itemDescription}"/>
+
+
+                <p:outputLabel for="currency" value="Currency"/>
+                <p:selectOneMenu id="currency" required="true"  value="#{trainingXItemCostController.currentElement.currency}">
+                    <f:selectItem itemLabel="Select..." itemValue=""/>
+                    <f:selectItem itemLabel="USD" itemValue="USD" />
+                    <f:selectItem itemLabel="GBP" itemValue="GBP"/>
+                    <f:selectItem itemLabel="GHS" itemValue="GHS"/>                                
+                </p:selectOneMenu>
+
+                <p:outputLabel for="itemAmount" value="Cost" />
+                <p:inputText id="itemAmount" required="true" value="#{trainingXItemCostController.currentElement.itemAmount}"/>
+
+
+
+
+
+                <h:panelGroup />
+
+                <p:column>
+                    <p:commandButton value="Save"  process="@form" update="@all"
+
+                                     actionListener="#{trainingXItemCostController.doSave()}" />
+                    <p:spacer width="5"/>
+                    <p:commandButton value="Cancel" process="@this" update="@all"  actionListener="#{trainingXItemCostController.doCancel()}" 
+                                     />
+
+                </p:column>
+
+
+            </h:panelGrid>
+
+
+
+        </h:form>
+
+
+
+        <h:form id="accountGroupForm" rendered="#{trainingXItemCostController.activeTab=='showAll'}"  >
+
+
+            <p:messages  id="info" closable="true"  />
+            <h:panelGrid id="tableAccountGroup"  width="50%" columns="1" >
+                <h:panelGroup>
+
+                    <p:commandLink value="New Cost Item"  process="@this" update="@all" actionListener="#{trainingXItemCostController.doNew()}" >
+
+
+
+                    </p:commandLink>
+
+                </h:panelGroup>
+                <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{trainingXItemCostController.objList}" draggableColumns="true"    var="m"  >
+
+                    
+                    <p:column headerText="Cost Type">
+                        <p:commandLink value="#{m.trainingCostItem}"/>                       
+
+
+
+                    </p:column>
+                    <p:column headerText="Item Description">
+                        <p:commandLink value="#{m.itemDescription}"/>                       
+
+
+
+                    </p:column>
+                    <p:column headerText="Item Currency">
+                        <p:commandLink value="#{m.currency}"/>                       
+
+
+
+                    </p:column>
+
+                    <p:column headerText="Cost">
+                        <p:commandLink value="#{m.itemAmount}"/>                       
+
+
+
+                    </p:column>
+
+
+                    <p:column>
+                        <h:panelGroup>
+                            <p:commandLink value="Edit" process="@this" update="@all" actionListener="#{trainingXItemCostController.doEdit(m)}">
+
+
+
+                            </p:commandLink>
+
+                            <p:spacer width="10"/>
+                            <p:commandLink value="Delete" process="@this" update="@all" actionListener="#{trainingXItemCostController.doDelete(m.id)}"/>
+                        </h:panelGroup>
+
+                    </p:column>
+
+
+
+
+
+
+                </p:dataTable>
+            </h:panelGrid>
+
+
+
+
+
+        </h:form>
+
+    </h:body>
+</html>
+

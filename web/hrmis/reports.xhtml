@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+
+
+    </h:head>
+    <h:body>
+        <ui:composition  template="/templates/commonlayout.xhtml">
+            <ui:define name="content">
+
+                <p:dialog  id="dlgWindow" closable="false" showEffect="highlight"  header="#{reportsController.dlgTitle}"  modal="true" position="center,center" widgetVar="dlgWindow" >
+
+                    <h:form id="hello">
+                        <p:messages id="msg" globalOnly="false" showDetail="true"  autoUpdate="true"/>
+                        <h:panelGrid columns="2" >  
+
+
+                            <p:outputLabel for="reportId" value="Report Id" />
+                            <p:inputText id="reportId" required="true" value="#{reportsController.currentElement.reportId}" />
+                            
+                            <p:outputLabel for="reportDescription" value="Report Description" />
+                            <p:inputText id="reportDescription" required="true" value="#{reportsController.currentElement.reportDescription}" />
+
+
+
+                            <h:panelGroup />
+
+                            <p:column>
+                                <p:commandButton value="Save"  process="@form"
+                                                 update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"  
+                                                 actionListener="#{reportsController.doSave()}" />
+                                <p:spacer width="5"/>
+                                <p:commandButton value="Cancel" process="@this" actionListener="#{reportsController.doCancel()}" 
+                                                 update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"           />
+
+                            </p:column>
+
+
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+
+
+
+
+
+                <h:form id="accountGroupForm">
+                    <p:messages  id="info" closable="true" autoUpdate="true" />
+                    <h:panelGrid id="tableAccountGroup"  width="50%" columns="1" >
+                        <h:panelGroup>
+
+                            <p:commandLink value="New Report"  process="@this" update=":dlgWindow" actionListener="#{reportsController.doNew()}" >
+
+
+
+                            </p:commandLink>
+
+                        </h:panelGroup>
+                        <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{reportsController.objList}" draggableColumns="true"    var="report"  >
+
+                            <p:column headerText="Report Id">
+                                <p:commandLink value="#{report.reportId}"/>
+
+
+
+                            </p:column>
+                            <p:column headerText="Report Description">
+                                <p:commandLink value="#{report.reportDescription}"/>
+
+
+
+                            </p:column>
+
+                            <p:column>
+                                <h:panelGroup>
+                                    <p:commandLink value="Edit" process="@this" update=":dlgWindow" actionListener="#{reportsController.doEdit(report)}">
+
+
+
+                                    </p:commandLink>
+
+                                    <p:spacer width="10"/>
+                                    <p:commandLink value="Delete" process="@this" update="out,:accountGroupForm:info" actionListener="#{reportsController.doDelete(report.id)}"/>
+                                </h:panelGroup>
+
+                            </p:column>
+
+
+
+
+
+
+                        </p:dataTable>
+                    </h:panelGrid>
+
+
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+
+
+    </h:head>
+    <h:body>
+        <ui:composition  template="/templates/commonlayout.xhtml">
+            <ui:define name="content">
+
+                <p:dialog  id="dlgAccGroup" closable="false" showEffect="highlight"  header="Add Account Group"  modal="true" position="center,center" widgetVar="dlgAccountGroup" >
+                    <script type="text/javascript" language="javascript">
+                        function handleComplete(xhr,status,args){
+                               
+                            if (args.saved){
+                                if (!args.validationFailed) {
+                            
+                                    dlgAccountGroup.hide(); 
+                                }
+                            }
+            
+                        }
+                    </script>
+                    <h:form id="hello">
+                        <p:messages id="msg" globalOnly="false" showDetail="true"  autoUpdate="true"/>
+                        <h:panelGrid id="trya" columns="2" >  
+
+                            <p:outputLabel  for="custType" value="Customer Type" />
+                            
+
+                            <p:inputText id="custType"  required="true"    value="#{custClassController.currCustomerClass.custType}" />
+
+                            <p:outputLabel for="classPrefix" value="Class Prefix" />
+                            <p:inputText id="classPrefix" required="true" value="#{custClassController.currCustomerClass.custClassPrefix}" />
+
+
+
+                            <p:outputLabel for="noOfDigits" value="No. Of Digits" />
+                            <p:inputText id="noOfDigits" required="true" value="#{custClassController.currCustomerClass.noOfDigits}" />
+
+                            <p:outputLabel for="curValue" value="Current Value" />
+                            <p:inputText id="curValue" required="true" value="#{custClassController.currCustomerClass.currentValue}" />
+
+
+
+
+
+                            <h:panelGroup />
+
+                            <p:column>
+                                <p:commandButton value="Save"  process="@form"
+                                                 update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"  
+                                                 actionListener="#{custClassController.doSave}" />
+                                <p:spacer width="5"/>
+                                <p:commandButton value="Cancel" process="@this"  actionListener="#{custClassController.doCancel()}" 
+                                                 update=":accountGroupForm:out,msg,:accountGroupForm:info"           >
+                                    
+                                    <p:resetInput target="custType,classPrefix,noOfDigits,curValue" />
+                                
+                                </p:commandButton>
+
+                            </p:column>
+
+
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+
+
+
+
+                <h:form id="accountGroupForm">
+                    <p:messages  id="info" closable="true" autoUpdate="true" />
+                    <h:panelGrid id="tableAccountGroup"  width="50%" columns="1" >
+                        <h:panelGroup>
+
+                            <p:commandLink value="New Customer Class"  process="@this" update=":hello" actionListener="#{custClassController.doNew}" >
+
+
+
+                            </p:commandLink>
+
+                        </h:panelGroup>
+                        <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{custClassController.customerClassList}" draggableColumns="true"    var="custClass"  >
+
+                            <p:column headerText="Customer Type">
+                                <p:commandLink value="#{custClass.custType}"/>
+
+
+
+                            </p:column>
+                            <p:column headerText="Class Prefix" >
+
+
+
+                                <h:outputText value="#{custClass.custClassPrefix}"></h:outputText>
+
+                            </p:column>
+
+                            <p:column headerText="No. Of digits" >
+
+
+
+                                <h:outputText value="#{custClass.noOfDigits}"></h:outputText>
+
+                            </p:column>
+                            
+                            <p:column headerText="Current Value" >
+
+
+
+                                <h:outputText value="#{custClass.currentValue}"></h:outputText>
+
+                            </p:column>
+                            
+                            
+                            <p:column>
+                                <h:panelGroup>
+                                    <p:commandLink value="Edit" process="@this" update=":hello" actionListener="#{custClassController.doEdit(custClass)}">
+
+
+
+                                    </p:commandLink>
+
+                                    <p:spacer width="10"/>
+                                    <p:commandLink value="Delete" process="@this" update="out,:accountGroupForm:info" actionListener="#{custClassController.doDelete(custClass)}"/>
+                                </h:panelGroup>
+
+                            </p:column>
+
+
+
+
+
+
+                        </p:dataTable>
+                    </h:panelGrid>
+
+
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

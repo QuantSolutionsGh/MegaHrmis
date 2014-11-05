@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+
+
+    </h:head>
+    <h:body>
+        <ui:composition  template="/templates/commonlayout.xhtml">
+            <ui:define name="content">
+                <h:form id="hello">
+                    <p:dialog  id="dlgWindow" closable="false" showEffect="highlight"  header="#{skillsController.dlgTitle}"  modal="true" position="center,center" widgetVar="dlgWindow" >
+
+
+                        <p:messages id="msg" globalOnly="false" showDetail="true"  autoUpdate="true"/>
+                        <h:panelGrid columns="2" >  
+
+
+                            <p:outputLabel for="skill" value="Competence" />
+                            <p:inputText id="skill" required="true"  value="#{skillsController.currentElement.skill}" />
+                            
+                            <p:outputLabel for="description" value="Description" />
+                            <p:inputText id="description" required="true" value="#{skillsController.currentElement.description}" />
+
+
+
+
+                            <h:panelGroup />
+
+                            <p:column>
+                                <p:commandButton value="Save"  process="@form"
+                                                 update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"  
+                                                 actionListener="#{skillsController.doSave()}" />
+                                <p:spacer width="5"/>
+                                <p:commandButton value="Cancel" process="@this" actionListener="#{skillsController.doCancel()}" 
+                                                 update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"           />
+
+                            </p:column>
+
+
+                        </h:panelGrid>
+
+                    </p:dialog>
+                </h:form>
+
+
+
+
+
+                <h:form id="accountGroupForm">
+                    <p:messages  id="info" closable="true" autoUpdate="true" />
+                    <h:panelGrid id="tableAccountGroup"  width="50%" columns="1" >
+                        <h:panelGroup>
+
+                            <p:commandLink value="New Competence"  process="@this" update=":hello:dlgWindow" actionListener="#{skillsController.doNew()}" >
+
+
+
+                            </p:commandLink>
+
+                        </h:panelGroup>
+                        <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{skillsController.objList}" draggableColumns="true"    var="sk"  >
+
+                            <p:column headerText="Competence">
+                                <p:commandLink value="#{sk.skill}"/>
+
+
+
+                            </p:column>
+                            <p:column headerText="Description">
+                                <p:commandLink value="#{sk.description}"/>
+
+
+
+                            </p:column>
+
+                            <p:column>
+                                <h:panelGroup>
+                                    <p:commandLink value="Edit" process="@this" update=":hello" actionListener="#{skillsController.doEdit(sk)}">
+
+
+
+                                    </p:commandLink>
+
+                                    <p:spacer width="10"/>
+                                    <p:commandLink value="Delete" process="@this" update="out,:accountGroupForm:info" actionListener="#{skillsController.doDelete(sk.id)}"/>
+                                </h:panelGroup>
+
+                            </p:column>
+
+
+
+
+
+
+                        </p:dataTable>
+                    </h:panelGrid>
+
+
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

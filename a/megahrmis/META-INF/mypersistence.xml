@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="eFinance" transaction-type="RESOURCE_LOCAL">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <non-jta-data-source>testdb2</non-jta-data-source>
+    <class>com.insol.jpa.entities.AccountGroup</class>
+    <class>com.insol.jpa.entities.GLAccount</class>
+    <class>com.insol.jpa.entities.Product</class>
+    <class>com.insol.jpa.entities.TransactionType</class>
+    <class>com.insol.jpa.entities.TransactionTypeXProductXGlAccount</class>
+    <class>com.insol.jpa.entities.ProductGroup</class>
+    <class>com.insol.jpa.entities.CustomerClass</class>
+    <class>com.insol.jpa.entities.Customer</class>
+    <class>com.met.hrmis.jpa.entities.Branches</class>
+    <class>com.met.hrmis.jpa.entities.Department</class>
+    <class>com.met.hrmis.jpa.entities.Education</class>
+    <class>com.met.hrmis.jpa.entities.Employee</class>
+    <class>com.met.hrmis.jpa.entities.EmploymentStatus</class>
+    <class>com.met.hrmis.jpa.entities.JobCategories</class>
+    <class>com.met.hrmis.jpa.entities.JobTitle</class>
+    <class>com.met.hrmis.jpa.entities.PayGrade</class>
+    <class>com.met.hrmis.jpa.entities.Skills</class>
+    <class>com.met.hrmis.jpa.entities.Authorities</class>
+    <class>com.met.hrmis.jpa.entities.Users</class>
+    <class>com.met.hrmis.jpa.entities.Reports</class>
+    <class>com.met.hrmis.jpa.entities.Membership</class>
+    <class>com.met.hrmis.jpa.entities.Relationship</class>
+    <class>com.met.hrmis.jpa.entities.EmployeeXRelationship</class>
+    <class>com.met.hrmis.jpa.entities.EmployeeXEducation</class>
+    <class>com.met.hrmis.jpa.entities.EmployeeXMembership</class>
+    <class>com.met.hrmis.jpa.entities.EmployeeXSkills</class>
+    <class>com.met.hrmis.jpa.entities.EmployeeHistory</class>
+    <class>com.met.hrmis.jpa.entities.Training</class>
+    <class>com.met.hrmis.jpa.entities.TrainingXEmployees</class>
+    <class>com.met.hrmis.jpa.entities.TrainingXItemCost</class>
+    <class>com.met.hrmis.jpa.entities.LeavePeriods</class>
+    <class>com.met.hrmis.jpa.entities.LeaveTypes</class>
+    <class>com.met.hrmis.jpa.entities.EmployeeLeaveEntitlement</class>
+    <class>com.met.hrmis.jpa.entities.PayGradeXLeaveTypeXDays</class>
+    <class>com.met.hrmis.jpa.entities.TrainingCostItem</class>
+    <class>com.met.hrmis.jpa.entities.EmployeeXLeaveEntitlementXLeaveDetails</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+    </properties>
+  </persistence-unit>
+</persistence>

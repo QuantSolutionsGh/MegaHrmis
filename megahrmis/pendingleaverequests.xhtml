@@ -1,0 +1,140 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:oou="http://omnifaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+
+
+    </h:head>
+    <h:body>
+        <f:metadata>
+        <f:event listener="#{employeeXLeaveEntitlementXLeaveDetailsController.allObjs}" type="preRenderView" />
+        </f:metadata>
+        <ui:composition  template="/templates/commonlayout.xhtml">
+            <ui:define name="content">
+
+                <p:dialog  id="dlgWindow" closable="false" showEffect="highlight"  header="#{leaveTypesController.dlgTitle}"  modal="true" position="center,center" widgetVar="dlgWindow" >
+
+                    <h:form id="hello">
+                        <p:messages id="msg" globalOnly="false" />
+
+                        <h:panelGrid columns="2" >  
+
+
+                            <p:outputLabel for="comments" value="Comments" />
+                            <p:inputTextarea id="comments"  required="true" value="#{employeeXLeaveEntitlementXLeaveDetailsController.currentElement.comments_supervisor}"/>
+                            <p:outputLabel for="action" value="Action"/>
+                             <p:selectOneMenu id="action"    required="true" value="#{employeeXLeaveEntitlementXLeaveDetailsController.currentElement.status}">
+                                <f:selectItem itemLabel="Select..." itemValue=""/>
+                                <f:selectItem itemLabel="Approve" itemValue="A" />
+                                <f:selectItem itemLabel="Reject" itemValue="R"/>
+                                <f:selectItem itemLabel="Cancel" itemValue="C"/>
+                           
+                            </p:selectOneMenu>
+
+
+
+
+                            <h:panelGroup />
+
+                            <p:column>
+                                <p:commandButton value="Save"  process="@form"
+                                                 update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"  
+                                                 actionListener="#{employeeXLeaveEntitlementXLeaveDetailsController.doProcess()}" />
+                                <p:spacer width="5"/>
+                                <p:commandButton value="Cancel" process="@this" actionListener="#{employeeXLeaveEntitlementXLeaveDetailsController.doCancel()}" 
+                                                 update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"           />
+
+                            </p:column>
+
+
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+
+
+
+
+
+                <h:form id="accountGroupForm">
+                    <p:messages  id="info" closable="true" />
+                    <h:panelGrid id="tableAccountGroup"  width="80%" columns="1" >
+                        
+
+
+                            <p:dataTable paginator="true" rows="30"    id="out"   value ="#{employeeXLeaveEntitlementXLeaveDetailsController.objList}" draggableColumns="true"    var="t"  >
+
+                                <p:column headerText="Staff">
+                                    <p:commandLink value="#{t.employee}"/>
+                                </p:column>
+
+                                <p:column headerText="Leave Period">
+                                    <p:commandLink value="#{t.employeeLeaveEntitlement.leavePeriods}"/>   
+                                </p:column>
+                                <p:column headerText="Leave Type">
+                                    <p:commandLink value="#{t.employeeLeaveEntitlement.leaveTypes}"/>   
+                                </p:column>
+                                <p:column headerText="Start Date">
+                                    <p:commandLink>
+                                        <p:outputLabel value="#{t.startDate}" >
+                                            <f:convertDateTime pattern="dd-MM-yyyy"   />
+                                        </p:outputLabel>
+                                    </p:commandLink>
+                                </p:column>
+                                <p:column headerText="End Date">
+                                    <p:commandLink>
+                                        <p:outputLabel value="#{t.endDate}" >
+                                            <f:convertDateTime pattern="dd-MM-yyyy"   />
+                                        </p:outputLabel>
+                                    </p:commandLink>
+                                </p:column>
+                                <p:column headerText="Number Of Days">
+                                    <p:commandLink value="#{t.leaveDays}"/>   
+                                </p:column>
+                                <p:column headerText="Days Outstanding">
+                                    <p:commandLink value="#{t.employeeLeaveEntitlement.daysAvailable}"/>   
+                                </p:column>
+                                <p:column headerText="Purpose">
+                                    <p:inputTextarea readonly="true" value="#{t.reason}" />
+
+                                </p:column>
+
+
+
+
+                                <p:column>
+                                    <h:panelGroup>
+                                        <p:commandLink value="Process" process="@this" update=":dlgWindow" actionListener="#{employeeXLeaveEntitlementXLeaveDetailsController.doEdit(t)}">
+
+
+
+                                        </p:commandLink>
+
+                                  </h:panelGroup>
+
+                                </p:column>
+
+
+
+
+
+
+                            </p:dataTable>
+                     
+
+                    </h:panelGrid>
+
+
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

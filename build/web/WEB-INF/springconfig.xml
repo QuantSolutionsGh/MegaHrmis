@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+          http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd
+          http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms-3.0.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
+">
+    
+    <bean id="dataSource"       destroy-method="close"   class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver" />
+        
+        <property name="url" value="jdbc:mysql://localhost:3306/megahrmis?zeroDateTimeBehavior=convertToNull" />
+        <property name="username" value="root" />
+        <property name="password" value="" />
+        <property name="initialSize" value="5" />
+        <property name="accessToUnderlyingConnectionAllowed" value="true"/>
+        
+        <property name="removeAbandoned" value="true"/>
+        <property name="removeAbandonedTimeout" value="30"/>
+        <property name="maxIdle" value="0" />
+       
+       
+   
+        <property  name="maxActive"  value="-1"  />
+       
+    </bean>
+
+    <tx:annotation-driven/>
+    <aop:aspectj-autoproxy  />
+    
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
+
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    
+    </bean>
+    
+    <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" >
+        <property name="persistenceUnitName"  value="eFinance"     />
+        <property name="dataSource" ref="dataSource"/>
+        <property name="persistenceXmlLocation" value="META-INF/mypersistence.xml"/>
+        <property name="jpaPropertyMap" ref="hibernateProperties"/>
+        
+       
+
+        
+        
+        <property name="jpaVendorAdapter" ref="hibernateJpaVendorAdapter" />
+       
+            
+       
+    </bean>
+    
+    
+    
+    <bean id="hibernateJpaVendorAdapter" class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+
+    
+    <util:map id="hibernateProperties">
+
+        <!--
+         The classname of a Hibernate org.hibernate.dialect.Dialect which allows Hibernate to generate SQL
+         optimized for a particular relational database.
+        -->
+        <entry key="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+
+        <!-- Write all SQL statements to console. This is an alternative to setting the log category org.hibernate.SQL to debug. -->
+        <entry key="hibernate.show_sql" value="true"/>
+
+        <!-- Pretty print the SQL in the log and console. -->
+        <entry key="hibernate.format_sql" value="true"/>
+
+        <!-- If turned on, Hibernate will generate comments inside the SQL, for easier debugging, defaults to false. -->
+        <entry key="hibernate.use_sql_comments" value="true"/>
+
+        <!-- If enabled, Hibernate will collect statistics useful for performance tuning. -->
+        <entry key="hibernate.generate_statistics" value="true"/>
+
+        <!--
+         Automatically validates or exports schema DDL to the database when the SessionFactory is created.
+         With create-drop, the database schema will be dropped when the SessionFactory is closed explicitly.
+         e.g. validate | update | create | create-drop
+         -->
+        <entry key="hibernate.hbm2ddl.auto" value="update"/>
+        
+        <entry key="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>
+        
+        <entry key="hibernate.cache.use_second_level_cache" value="true"/>
+        
+        <entry key="hibernate.cache.use_query_cache" value="true"/>
+        
+        <entry key="hibernate.search.default.directory_provider" value="filesystem"/>
+        
+        <entry key="hibernate.search.default.indexBase" value="c:\test\"/>
+        
+        
+    </util:map>
+    
+    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+        <property name="host" value="mail" />
+        <property name="port" value="25" />
+        <property name="username" value="bosei-aning@metinsurance.com" />
+        <property name="password" value="1350" />
+        <property name="javaMailProperties">
+            <props>
+                <prop key="mail.debug">true</prop> 
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.mime.charset">UTF-8</prop>
+                <prop key="mail.transport.protocol">smtp</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <bean id="velocityEngine"
+          class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+        <property name="velocityProperties">
+            
+               
+            <value>
+                resource.loader=class
+                class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+            </value>
+       
+        </property>
+    </bean>
+    
+    <bean id="mailer" class="com.met.hrmis.util.Mailer">
+        <property name="mailSender" ref="mailSender"/>
+        <property name="velocityEngine" ref="velocityEngine"/>
+    </bean>
+    
+    
+    
+   
+    
+    
+    <bean id="jpaTemplate" class="org.springframework.orm.jpa.JpaTemplate">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
+    </bean>
+    
+    <bean id="accountGroupController" class="com.insol.jsf.controllers.AccountGroupController" scope="session">
+        <property name="accountGroupDao" ref="accountGroupDao"/>
+    </bean>
+    
+    <bean id="chartOfAccountsController" class="com.insol.jsf.controllers.ChartOfAccountsController" scope="session">
+        <property name="chartOfAccountsDao" ref="chartOfAccountsDao"/>
+    </bean>
+     
+   
+        
+    
+    
+    <bean id="accountGroupDao" class="com.insol.spring.dao.AccountGroupDao"  parent="parentDao"/>
+      
+    <bean id="parentDao" class="com.insol.spring.dao.JpaParentDao" abstract="true"/>
+        
+    <bean id="_parentDao" class="com.insol.spring.dao.ParentDao" abstract="true" >
+        <property name="jpaTemplate" ref="jpaTemplate"/>
+        
+    </bean>
+    <bean id="chartOfAccountsDao" class="com.insol.spring.dao.ChartOfAccountsDao" parent="parentDao"/>       
+    
+    <bean id="productDao" class="com.insol.spring.dao.ProductDao" parent="parentDao"/>
+    <bean id="transactionTypeDao" class="com.insol.spring.dao.TransactionTypeDao" parent="parentDao"/>
+    <bean id="transactionTypeXProductXGLAccountDao" class="com.insol.spring.dao.TransactionTypeXProductXGLAccountDao" parent="parentDao"/>
+    <bean id="productController" class="com.insol.jsf.controllers.ProductController" scope="session">
+        <property name="productDao" ref="productDao"/>
+    </bean>
+    <bean id="transactionTypeController" class="com.insol.jsf.controllers.TransactionTypeController" scope="session">
+        <property name="transactionTypeDao" ref="transactionTypeDao" />
+    </bean>
+    <bean id="productGroupDao" class="com.insol.spring.dao.ProductGroupDao" parent="parentDao"/>
+    <bean id="productGroupController" class="com.insol.jsf.controllers.ProductGroupController" scope="session">
+        <property name="productGroupDao" ref="productGroupDao" />
+    </bean>
+    <bean id="transactionTypeXProductXGlAccountController" 
+          class="com.insol.jsf.controllers.TransactionTypeXProductXGlAccountController" scope="session">
+        <property name="transGlSetup" ref="transactionTypeXProductXGLAccountDao" />
+    </bean>
+    <bean id="custClassDao" class="com.insol.spring.dao.CustClassDao" parent="parentDao"/>
+    <bean id="customerDao" class="com.insol.spring.dao.CustomerDao" parent="parentDao"/>
+    <bean id="custClassController" class="com.insol.jsf.controllers.CustClassController">
+        <property name="custClassDao" ref="custClassDao"/>
+    </bean>
+    <bean id="docNumGenImpl" class="com.insol.spring.util.DocNumGenImpl" scope="singleton">
+        <property  name="custClassDao" ref="custClassDao" />
+    </bean>
+    
+    
+    <bean id="systemAspects" class="com.insol.spring.util.SystemAspects">
+        <property name="docNumGen" ref="docNumGenImpl"/>
+    </bean>
+        
+    <bean id="customerController" class="com.insol.jsf.controllers.CustomerController">
+        <property name="genericDao" ref="customerDao" />
+    </bean>
+    <bean id="custAdvSearchImpl" class="com.insol.spring.dao.CustAdvSearchImpl">
+      
+    </bean>
+    
+      <!-- HRMIS beans start here -->
+      
+    <bean id="hrParentDao" class="com.met.hrmis.jpa.dao.HrParentDao" abstract="true"/>
+    
+    <bean id="skillsDao" class="com.met.hrmis.jpa.dao.SkillsDao" parent="hrParentDao"/>
+    
+    <bean id="entitlementProcessor" class="com.met.hrmis.util.EntitlementProcessor">
+        <property name="leaveEntitlementDao" ref="leaveEntitlementDao"/>
+        <property name="payGradeXLeaveTypeXDaysDao" ref="payGradeXLeaveTypeXDaysDao"/>
+    </bean>
+    
+      
+  
+    
+    <bean id="payGradeDao" class="com.met.hrmis.jpa.dao.PayGradeDao" parent="hrParentDao"/>
+    <bean id="jobCategoriesDao" class="com.met.hrmis.jpa.dao.JobCategoriesDao" parent="hrParentDao"/>
+    <bean id="jobTitleDao" class="com.met.hrmis.jpa.dao.JobTitleDao" parent="hrParentDao"/>
+    <bean id="employmentStatusDao" class="com.met.hrmis.jpa.dao.EmploymentStatusDao" parent="hrParentDao"/>
+    <bean id="employeeDao" class="com.met.hrmis.jpa.dao.EmployeeDao2" parent="hrParentDao"/>
+    <bean id="educationDao" class="com.met.hrmis.jpa.dao.EducationDao" parent="hrParentDao"/>
+    <bean id="usersDao" class="com.met.hrmis.jpa.dao.UsersDao" parent="hrParentDao"/>
+    <bean id="departmentDao" class="com.met.hrmis.jpa.dao.DepartmentDao" parent="hrParentDao"/>
+    <bean id="branchesDao" class="com.met.hrmis.jpa.dao.BranchesDao" parent="hrParentDao"/>
+    <bean id="userAuthoritiesDao" class="com.met.hrmis.jpa.dao.UserAuthoritiesDao" parent="hrParentDao"/>
+    <bean id="reportsDao" class="com.met.hrmis.jpa.dao.ReportsDao" parent="hrParentDao"/>
+    <bean id="relationshipDao" class="com.met.hrmis.jpa.dao.RelationshipDao" parent="hrParentDao"/>
+    <bean id="membershipDao" class="com.met.hrmis.jpa.dao.MembershipDao" parent="hrParentDao"/>
+    <bean id="employeeXRelationshipDao" class="com.met.hrmis.jpa.dao.EmployeeXRelationshipDao" parent="hrParentDao"/>
+    <bean id="employeeXEducationDao" class="com.met.hrmis.jpa.dao.EmployeeXEducationDao" parent="hrParentDao"/>
+    <bean id="employeeXMembershipDao" class="com.met.hrmis.jpa.dao.EmployeeXMembershipDao" parent="hrParentDao"/>
+    <bean id="employeeXSkillsDao" class="com.met.hrmis.jpa.dao.EmployeeXSkillsDao" parent="hrParentDao"/>
+    <bean id="employeeHistoryDao" class="com.met.hrmis.jpa.dao.EmployeeHistoryDao" parent="hrParentDao"/>
+    <bean id="trainingXEmployeesDao" class="com.met.hrmis.jpa.dao.TrainingXEmployeesDao" parent="hrParentDao"/>
+    <bean id="trainingDao" class="com.met.hrmis.jpa.dao.TrainingDao" parent="hrParentDao"/>
+    <bean id="trainingXItemCostDao" class="com.met.hrmis.jpa.dao.TrainingXItemCostDao" parent="hrParentDao"/>
+    <bean id="leaveTypeDao" class="com.met.hrmis.jpa.dao.LeaveTypeDao" parent="hrParentDao"/>
+    <bean id="leavePeriodsDao" class="com.met.hrmis.jpa.dao.LeavePeriodsDao" parent="hrParentDao"/>
+    <bean id="terminationReasonDao" class="com.met.hrmis.jpa.dao.TerminationReasonDao" parent="hrParentDao"/>
+    <bean id="leaveEntitlementDao" class="com.met.hrmis.jpa.dao.LeaveEntitlementDao" parent="hrParentDao"/>
+    <bean id="payGradeXLeaveTypeXDaysDao" class="com.met.hrmis.jpa.dao.PayGradeXLeaveTypeXDaysDao" parent="hrParentDao"/>
+    <bean id="trainingCostItemDao" class="com.met.hrmis.jpa.dao.TrainingCostItemDao" parent="hrParentDao"/>
+    <bean id="employeeXLeaveEntitlementXLeaveDetailsDao" class="com.met.hrmis.jpa.dao.EmployeeXLeaveEntitlementXLeaveDetailsDao" parent="hrParentDao">
+        <property name="leaveEntitlementDao" ref="leaveEntitlementDao"/>
+    </bean>
+    
+    <!-- HRMIS controllers start here -->
+    <bean id="parentController" class="com.met.hrmis.controllers.ParentController" abstract="true"/>
+    <bean id="branchController" class="com.met.hrmis.controllers.BranchController" parent="parentController">
+        <property name="genericDao" ref="branchesDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+            
+    </bean>
+    <bean id="departmentController" class="com.met.hrmis.controllers.DepartmentController" parent="parentController">
+        <property name="genericDao" ref="departmentDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>
+    <bean id="employeeController" class="com.met.hrmis.controllers.EmployeeController3" parent="parentController">
+        <property name="genericDao" ref="employeeDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+        <property name="em" ref="hrEntityManager"/>
+    </bean>
+    
+   
+    
+    <bean id="employmentStatusController" class="com.met.hrmis.controllers.EmploymentStatusController" parent="parentController">
+        <property name="genericDao" ref="employmentStatusDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>
+        
+    <bean id="jobCategoriesController" class="com.met.hrmis.controllers.JobCategoriesController" parent="parentController">
+        <property name="genericDao" ref="jobCategoriesDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>
+    <bean id="levelOfEducationController" class="com.met.hrmis.controllers.LevelOfEducationController" parent="parentController">
+        <property name="genericDao" ref="educationDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>
+    <bean id="skillsController" class="com.met.hrmis.controllers.SkillsController" parent="parentController">
+        <property name="genericDao" ref="skillsDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>
+    <bean id="payGradeController" class="com.met.hrmis.controllers.PayGradeController" parent="parentController">
+        <property name="genericDao" ref="payGradeDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>
+    <bean id="jobTitleController" class="com.met.hrmis.controllers.JobTitleController" parent="parentController" scope="session">
+        <property name="genericDao" ref="jobTitleDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>
+    <bean id="loginController" class="com.insol.jsf.controllers.LoginController" scope="session"/>
+    <bean id="userController" class="com.met.hrmis.controllers.UserController" parent="parentController" scope="session">
+        <property name="genericDao" ref="usersDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>         
+  
+    <bean id="userAuthoritiesController" class="com.met.hrmis.controllers.UserAuthoritiesController" parent="parentController">
+        <property name="genericDao" ref="userAuthoritiesDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+        
+    </bean>
+    
+    <bean id="reportsController" class="com.met.hrmis.controllers.ReportsController" parent="parentController">
+        <property name="genericDao" ref="reportsDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>
+        
+    <bean id="relationshipController" class="com.met.hrmis.controllers.RelationshipController" parent="parentController">
+        <property name="genericDao" ref="relationshipDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>
+    <bean id="membershipController" class="com.met.hrmis.controllers.MembershipController" parent="parentController">
+        <property name="genericDao" ref="membershipDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>    
+   
+   
+    <bean id="employeeXEducationController" class="com.met.hrmis.controllers.EmployeeXEducationController" parent="parentController">
+        <property name="genericDao" ref="employeeXEducationDao"/>
+        <property name="employeeDao" ref="employeeDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>
+    <bean id="employeeXRelationshipController" class="com.met.hrmis.controllers.EmployeeXRelationshipController" parent="parentController">
+        <property name="genericDao" ref="employeeXRelationshipDao"/>
+        <property name="employeeDao" ref="employeeDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>
+   
+    <bean id="employeeXMembershipController" class="com.met.hrmis.controllers.EmployeeXMembershipController" parent="parentController" scope="session">
+        <property name="genericDao" ref="employeeXMembershipDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+        <property  name="employeeDao" ref="employeeDao"/>
+    </bean>
+   
+    <bean id="employeeXSkillsController" class="com.met.hrmis.controllers.EmployeeXSkillsController" parent="parentController">
+        <property name="genericDao" ref="employeeXSkillsDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+        <property name="employeeDao" ref="employeeDao"/>
+    </bean>
+    
+    <bean id="employeeHistoryController" class="com.met.hrmis.controllers.EmployeeHistoryController" parent="parentController">
+        <property name="genericDao" ref="employeeHistoryDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+        <property name="employeeDao" ref="employeeDao"/>
+    </bean>
+    
+    
+    
+    <bean id="trainingController" class="com.met.hrmis.controllers.TrainingController" parent="parentController">
+        <property name="genericDao" ref="trainingDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>
+    <bean id="trainingXEmployeeController" class="com.met.hrmis.controllers.TrainingXEmployeeController" parent="parentController">
+        <property name="genericDao" ref="trainingXEmployeesDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+        <property name="trainingDao" ref="trainingDao"/>
+    </bean>
+        
+    <bean id="trainingXItemCostController" class="com.met.hrmis.controllers.TrainingXItemCostController" parent="parentController">
+        
+        <property name="genericDao" ref="trainingXItemCostDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>
+        <property name="trainingDao" ref="trainingDao"/>
+        
+    </bean>
+    <bean id="employeeXTrainingController" class="com.met.hrmis.controllers.EmployeeXTrainingController">
+        <property name="genericDao" ref="employeeDao" />
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>
+    
+    <bean id="leaveTypesController" class="com.met.hrmis.controllers.LeaveTypesController" parent="parentController">
+        <property name="genericDao" ref="leaveTypeDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>       
+        
+    </bean>
+    
+    <bean id="leavePeriodsController" class="com.met.hrmis.controllers.LeavePeriodsController" parent="parentController">
+        <property name="genericDao" ref="leavePeriodsDao"/>
+        <property name="entitlementProcessor" ref="entitlementProcessor" />
+        <property name="dlgWindow" value="dlgWindow"/>  
+    </bean>
+    
+    
+    
+  
+    <bean id="leaveEntitlementController" class="com.met.hrmis.controllers.LeaveEntitlementController" parent="parentController">
+        <property name="genericDao" ref="leaveEntitlementDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>  
+    </bean>
+    
+    <bean id="payGradeXLeaveTypeXDaysController" class="com.met.hrmis.controllers.PayGradeXLeaveTypeXDaysController" parent="parentController">
+        <property name="genericDao" ref="payGradeXLeaveTypeXDaysDao"/>
+        <property name="dlgWindow" value="dlgWindow"/>  
+    </bean>
+
+   
+    <bean id="terminationReasonController" class="com.met.hrmis.controllers.TerminationReasonController" parent="parentController">
+        <property name="genericDao" ref="terminationReasonDao" />
+        <property name="dlgWindow" value="dlgWindow"/>
+            
+    </bean>
+    
+    <bean id="trainingCostItemController" class="com.met.hrmis.controllers.TrainingCostItemController" parent="parentController">
+        <property name="genericDao" ref="trainingCostItemDao"/>
+        <property name="dlgWindow" value="dlgWindow"/> 
+    </bean>
+    
+    <bean id="employeeXLeaveEntitlementXLeaveDetailsController" class="com.met.hrmis.controllers.EmployeeXLeaveEntitlementXLeaveDetailsController"
+          parent="parentController" scope="session">
+        <property name="genericDao" ref="employeeXLeaveEntitlementXLeaveDetailsDao"/>
+        <property name="em" ref="hrEntityManager"/>
+        <property name="mailer" ref="mailer"/>
+        <property name="dlgWindow" value="dlgWindow"/> 
+    </bean>
+    <bean id="hrEntityManager" class="com.met.hrmis.jpa.dao.HrEntityManager"/>
+    
+    <bean id="emailConfiguration" class="com.met.hrmis.jpa.entities.EmailConfiguration">
+        <property name="mailSender" value="bosei-aning@metinsurance.com" />
+        <property name="leaveApprovalNotificationSubscribers" value="bosei-aning@metinsurance.com"/>
+        <property name="leaveApprovalReminderNotificationSubscribers" value=""/>
+        <property name="leaveCancellationNoficationSubscribers" value="" />
+        <property name="leaveRejectionNotificationSubscribers" value="" />
+        <property name="leaveRequestNotificationSubscribers" value="" />
+        <property name="leaveRequestReminderActive" value="true" />
+        <property name="birthdayNotificationSubscribers" value="" />
+    </bean>
+    
+    <bean id="employeeXLeaveDetailsController" class="com.met.hrmis.controllers.EmployeeXLeaveDetailsController">
+        <property name="genericDao" ref="employeeDao" />
+        <property name="dlgWindow" value="dlgWindow"/>
+    </bean>
+    
+    <bean id="indexBuilder" class="com.met.hrmis.util.DbIndexBuilder" init-method="buildIndex"/>
+    
+    
+    
+    
+</beans>
+ 
