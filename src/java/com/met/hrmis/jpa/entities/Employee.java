@@ -91,6 +91,9 @@ public class Employee implements Serializable {
     @JoinColumn(name="BRANCH",referencedColumnName="ID")
     @ManyToOne()
     private Branches branch;
+    @JoinColumn(name="TERMINATION_REASON", referencedColumnName="ID")
+    @ManyToOne()
+    private TerminationReason terminationReason;
     @JoinColumn(name="JOB_CATEGORY",referencedColumnName="ID")
     @ManyToOne()
     private JobCategories jobCategory;
@@ -112,6 +115,20 @@ public class Employee implements Serializable {
     private Collection<TrainingXEmployees> empTrainingCollection;
     @OneToMany(cascade=CascadeType.ALL, mappedBy="employee")
     private Collection<EmployeeXEntitlementXDetails> empLeaveCollection;
+    @OneToMany(cascade=CascadeType.ALL,mappedBy="employee")
+    private Collection<EmpXLeavePlanner> empLeavePlannerCollection;
+     
+    
+
+    public Collection<EmpXLeavePlanner> getEmpLeavePlannerCollection() {
+        return empLeavePlannerCollection;
+    }
+
+    public void setEmpLeavePlannerCollection(Collection<EmpXLeavePlanner> empLeavePlannerCollection) {
+        this.empLeavePlannerCollection = empLeavePlannerCollection;
+    }
+    
+    
 
     public Collection<EmployeeXEntitlementXDetails> getEmpLeaveCollection() {
         return empLeaveCollection;
@@ -336,6 +353,15 @@ public class Employee implements Serializable {
     public void setContractTerminationDate(Date contractTerminationDate) {
         this.contractTerminationDate = contractTerminationDate;
     }
+
+    public TerminationReason getTerminationReason() {
+        return terminationReason;
+    }
+
+    public void setTerminationReason(TerminationReason terminationReason) {
+        this.terminationReason = terminationReason;
+    }
+    
     
     
     

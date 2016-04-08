@@ -5,7 +5,7 @@
 package com.met.hrmis.jpa.dao;
 
 import com.met.hrmis.jpa.entities.Employee;
-import com.met.hrmis.util.IEmployeeSearch;
+import com.met.hrmis.util.IEmployeeMethods;
 import java.util.Collection;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
  *
  * @author BERNARD
  */
-public class EmployeeDao2 extends EmployeeDao implements IEmployeeSearch{
+public class EmployeeDao2 extends EmployeeDao implements IEmployeeMethods{
 
     @Override
     @Transactional
@@ -27,6 +27,7 @@ public class EmployeeDao2 extends EmployeeDao implements IEmployeeSearch{
         fullTextEntityManager = org.hibernate.search.jpa.Search.getFullTextEntityManager(this.getEntityManager());
         
         queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Employee.class).get();
+       
         
          org.apache.lucene.search.Query query = queryBuilder.keyword().wildcard().onField("empId").andField("firstName").andField("lastName").matching(queryString).createQuery();
 
@@ -40,5 +41,9 @@ public class EmployeeDao2 extends EmployeeDao implements IEmployeeSearch{
         
         
     }
+
+    
+
+    
     
 }

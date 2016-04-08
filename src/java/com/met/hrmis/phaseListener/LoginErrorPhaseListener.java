@@ -23,6 +23,8 @@ import org.springframework.security.web.WebAttributes;
 public class LoginErrorPhaseListener implements PhaseListener {
 
     private static final long serialVersionUID = -1216620620302322995L;
+    
+    
 
     @Override
     public void beforePhase(PhaseEvent event) {
@@ -40,6 +42,7 @@ public class LoginErrorPhaseListener implements PhaseListener {
         }
 
         FacesContext facesContext = event.getFacesContext();
+        
         HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
 // Set to expire far in the past.
         response.setHeader("Expires", "Sat, 6 May 1995 12:00:00 GMT");

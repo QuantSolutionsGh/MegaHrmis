@@ -7,6 +7,7 @@ package com.met.hrmis.util;
 import java.util.Calendar;
 import java.util.Date;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -18,6 +19,11 @@ public class FacesUtils {
 
     public static Object getSessionMapValue(String key) {
         return FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get(key);
+    }
+    
+    public static Object getHttpServletRequest(){
+        
+        return FacesContext.getCurrentInstance().getExternalContext().getRequest();
     }
 
    

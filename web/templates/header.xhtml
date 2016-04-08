@@ -11,21 +11,20 @@
 
                 <p:graphicImage url="/metLogo.jpg" alt="Met Insurance" title="EasyCredit"
                                 width="60" height="40"/>
-                <b style="font-size:150%">Welcome,</b>
+                <b style="font-size:150%">#{loginController.companyName}</b>
                 <p:spacer width="10" />
-                <p:commandLink  style="font-size:150%" value="#{loginController.username}"  />
+               
                 <p:spacer width="20" />
                 <div align="right">
-                    <h:outputLink value="">Home</h:outputLink>
-                    <p:spacer width="10"/>
+                   
 
-                    <p:commandLink value="Change Password"  ajax="true"    />
+                    <p:commandLink value="Change Password" action="/hrmis/passwordChangeDtls.xhtml?faces-redirect=true"  ajax="true"    />
                     <p:spacer width="10" />
-                    <h:outputLink value="/megahrmis/faces/j_spring_security_logout"> [Logout] </h:outputLink>
+                    <h:outputLink value="/megahrmis/faces/j_spring_security_logout"> [Logout #{loginController.username}] </h:outputLink>
                 </div>
 
                 <p:menubar  autoDisplay="true">
-                    <p:submenu label="Setups">
+                    <p:submenu label="Setups" icon="ui-icon-settings">
 
                         <p:submenu label="User Management" >
 
@@ -76,14 +75,28 @@
 
 
                         </p:submenu>  
+                        
+                        <p:submenu label="Email"  >
+
+                            <p:menuitem value="Configuration" ajax="false"  action="/faces/hrmis/emailConfig.xhtml?faces-redirect=true"/>
+
+
+                        </p:submenu>
+                        
+                        <p:submenu label="Contract"  >
+
+                            <p:menuitem value="Termination Reasons" ajax="false"  action="/faces/hrmis/TerminationReason.xhtml?faces-redirect=true"/>
+
+
+                        </p:submenu>
                     </p:submenu>
-                    <p:submenu label="Employee">
+                    <p:submenu label="Employee" icon="ui-icon-employee">
 
                         <p:menuitem value="Employee Info" ajax="false"  action="/faces/hrmis/employees.xhtml?faces-redirect=true"/>
 
 
                     </p:submenu>  
-                    <p:submenu label="Training">
+                    <p:submenu label="Training" icon="ui-icon-training">
 
                         <p:menuitem value="Training Info" ajax="false"  action="/faces/hrmis/training.xhtml?faces-redirect=true"/>
 
@@ -91,7 +104,7 @@
 
 
                     </p:submenu>  
-                    <p:submenu label="Leave Management">
+                    <p:submenu  label="Leave Management" icon="ui-icon-leave">
 
                         <p:menuitem value="Leave Request Form" ajax="false"  action="/faces/leaverequest.xhtml?faces-redirect=true"/>
                         
@@ -103,12 +116,12 @@
 
                         <p:menuitem value="PayGrade and Leave Days" ajax="false"  action="/faces/hrmis/paygradeXleavetypesXdays.xhtml?faces-redirect=true"/>
 
-                        <p:menuitem value="Leave Entitlements" ajax="false"  action="/faces/hrmis/employees.xhtml?faces-redirect=true"/>
+                        <p:menuitem value="Leave Register" ajax="false"  action="/faces/hrmis/leaveregister.xhtml?faces-redirect=true"/>
 
 
 
                     </p:submenu> 
-                    <p:submenu label="Reporting">
+                    <p:submenu label="Reporting" icon="ui-icon-report">
 
                         <p:menuitem value="Reports" ajax="false"  action="/faces/hrmis/reports.xhtml?faces-redirect=true"/>
 

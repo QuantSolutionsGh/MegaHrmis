@@ -10,6 +10,7 @@ import com.met.hrmis.jpa.entities.Training;
 import com.met.hrmis.jpa.entities.TrainingXEmployees;
 import com.met.hrmis.util.FacesUtils;
 import java.util.Collection;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
@@ -21,6 +22,7 @@ public class TrainingXEmployeeController extends ParentController {
     
      private  IHrGenericDao trainingDao;
     private String activeTab = "showAll";
+
     
     public TrainingXEmployeeController(){
         super(TrainingXEmployees.class);
@@ -38,6 +40,7 @@ public class TrainingXEmployeeController extends ParentController {
         this.trainingDao = trainingDao;
     }
 
+   
    
 
    
@@ -58,6 +61,7 @@ public class TrainingXEmployeeController extends ParentController {
             this.getGenericDao().delete(obj);
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Item has been deleted.", null));
+            
 
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null,

@@ -29,6 +29,7 @@ public class EmployeeDao extends HrParentDao {
          Hibernate.initialize(emp.getEmpHistoryCollection());
          Hibernate.initialize(emp.getEmpTrainingCollection());
          Hibernate.initialize(emp.getEmpLeaveCollection());
+         Hibernate.initialize(emp.getEmpLeavePlannerCollection());
          return emp;
     }
     

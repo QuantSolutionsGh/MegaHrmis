@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+
+
+    </h:head>
+
+
+    <h:body>
+        <ui:composition  template="/templates/commonlayout.xhtml">
+
+            <ui:define name="content">
+
+                <f:event listener="#{emailConfigController.dispConfig}" type="preRenderView" />
+
+
+                <h:form id="accountGroupForm">
+                    <p:messages  id="info" closable="true" autoUpdate="true" />
+
+
+                    <p:fieldset legend="Email Configuration" style="margin-bottom:20px">
+                        <h:panelGrid columns="2" cellpadding="5">
+                            
+                            <p:outputLabel for="company" value="Company" />
+                            <p:inputText id="company"  value="#{emailConfigController.emailConfig.company}" size="70" />
+                            
+                            
+                           
+                            
+                            
+                            <p:outputLabel for="mailSender" value="Default Mail Sender" />
+                            <p:inputText id="mailSender"  value="#{emailConfigController.emailConfig.mailSender}" size="70" />
+                            
+                            <p:outputLabel for="mailSenderUsername" value="Mail Sender User Name" />
+                            <p:inputText id="mailSenderUsername" value="#{emailConfigController.emailConfig.userName}"  size="70" />
+                            
+                            <p:outputLabel for="mailSenderPassword" value="Mail Sender User Password" />
+                            <p:inputText id="mailSenderPassword" value="#{emailConfigController.emailConfig.password}"   size="70" />
+                            
+                            <p:outputLabel for="mailSenderHost" value="Mail Sender Host Name" />
+                            <p:inputText id="mailSenderHost" value="#{emailConfigController.emailConfig.emailHost}"   size="70" />
+                            
+                            <p:outputLabel for="mailSenderHostPort" value="Mail Sender Host Port" />
+                            <p:inputText id="mailSenderHostPort" value="#{emailConfigController.emailConfig.emailPort}"  size="70" />
+                            
+                            <p:outputLabel for="notificationSubscribers" value="Leave Approval Notification Subscribers" />
+                            <p:inputText id="notificationSubscribers" value="#{emailConfigController.emailConfig.leaveApprovalNotificationSubscribers}"  size="70"  />
+                            <p:outputLabel for="reminderSubscribers" value="Leave Approval Reminder Notification Subscribers"/>
+                            <p:inputText id="reminderSubscribers"
+                                         value="#{emailConfigController.emailConfig.leaveApprovalReminderSubscribers}" size="70"  />
+                            <p:outputLabel for="cancellationSubscribers" value="Leave Cancellation Notification Subscribers"/>
+                            <p:inputText id="cancellationSubscribers" value="#{emailConfigController.emailConfig.leaveCancellationSubscribers}" size="70"  />
+                            <p:outputLabel for="leaveReminderStatus" value="Leave Reminder Status"/>
+                            <p:selectOneMenu id="leaveReminderStatus"  value="#{emailConfigController.emailConfig.leaveRequestReminderStatus}">
+                                <f:selectItem itemLabel="Select..." itemValue="false"/>
+                                <f:selectItem itemLabel="Active" itemValue="true" />
+                                <f:selectItem itemLabel="Disabled" itemValue="false"/>
+
+                            </p:selectOneMenu>
+                            <p:outputLabel for="birthdayNotificationSubscribers" value="Birthday Notification Subscribers"/>
+                            <p:inputText id="birthdayNotificationSubscribers" 
+                                         value="#{emailConfigController.emailConfig.birthdaySubscribers}" size="70"  />
+                             <p:outputLabel for="appContextPath" value="Application Context Path eg.http://localhost:8080/megahrmis/"/>
+                            <p:inputText id="appContextPath" 
+                                         value="#{emailConfigController.emailConfig.appContext}" size="70"  />
+                            <h:panelGroup/>
+                            <p:commandButton value="Save" actionListener="#{emailConfigController.doSave()}" />
+
+
+
+
+
+
+                        </h:panelGrid>
+                    </p:fieldset>
+
+
+
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -53,6 +53,10 @@ public class EmployeeXEntitlementXDetails implements Serializable {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date registrationDate;
     
+    @Column(name="APPROVAL_DATE")
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date approvalDate;
+    
     @Column(name="REASON")
     private String reason;
     
@@ -61,6 +65,20 @@ public class EmployeeXEntitlementXDetails implements Serializable {
     
     @Column(name="STATUS")
     private String status;
+    
+    @Column(name="OUTSTANDING_BALANCE")
+    
+    private int outstandingBalance;
+
+    public int getOutstandingBalance() {
+        return outstandingBalance;
+    }
+
+    public void setOutstandingBalance(int outstandingBalance) {
+        this.outstandingBalance = outstandingBalance;
+    }
+    
+    
 
     public String getComments_supervisor() {
         return comments_supervisor;
@@ -115,6 +133,16 @@ public class EmployeeXEntitlementXDetails implements Serializable {
     public void setEmployeeLeaveEntitlement(EmployeeLeaveEntitlement employeeLeaveEntitlement) {
         this.employeeLeaveEntitlement = employeeLeaveEntitlement;
     }
+
+    public Date getApprovalDate() {
+        return approvalDate;
+    }
+
+    public void setApprovalDate(Date approvalDate) {
+        this.approvalDate = approvalDate;
+    }
+    
+    
 
     public Date getEndDate() {
         return endDate;

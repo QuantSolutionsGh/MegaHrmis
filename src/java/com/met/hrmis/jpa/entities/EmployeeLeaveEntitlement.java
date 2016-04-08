@@ -28,7 +28,7 @@ public class EmployeeLeaveEntitlement implements Serializable {
     private Employee employee;
     @JoinColumn(name="LEAVE_PERIOD",referencedColumnName="ID")
     @ManyToOne()
-    private LeavePeriods leavePeriods;
+    private LeavePeriods leavePeriods;    //Not necessary anymore, only here because i don't know implications to code
     @JoinColumn(name="LEAVE_TYPE",referencedColumnName="ID")
     @ManyToOne()
     private LeaveTypes leaveTypes;

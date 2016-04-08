@@ -108,9 +108,9 @@
 
 
 
-                                <p:column>
+                                <p:column headerText="Action">
                                     <h:panelGroup>
-                                        <p:commandLink value="Process" process="@this" update=":dlgWindow" actionListener="#{employeeXLeaveEntitlementXLeaveDetailsController.doEdit(t)}">
+                                        <p:commandLink  rendered ="#{t.employeeLeaveEntitlement.daysAvailable >= t.leaveDays}" value="Process" process="@this" update=":dlgWindow" actionListener="#{employeeXLeaveEntitlementXLeaveDetailsController.doEdit(t)}">
 
 
 

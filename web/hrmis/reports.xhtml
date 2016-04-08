@@ -21,8 +21,9 @@
 
 
                             <p:outputLabel for="reportId" value="Report Id" />
-                            <p:inputText id="reportId" required="true" value="#{reportsController.currentElement.reportId}" />
-                            
+                            <p:inputText id="reportId" required="true" value="#{reportsController.currentElement.reportId}"/>                 
+
+
                             <p:outputLabel for="reportDescription" value="Report Description" />
                             <p:inputText id="reportDescription" required="true" value="#{reportsController.currentElement.reportDescription}" />
 
@@ -45,6 +46,13 @@
                     </h:form>
                 </p:dialog>
 
+                <p:confirmDialog global="true">
+                    <p:commandButton value="Yes"  type="button" styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"/>
+                </p:confirmDialog>
+
 
 
 
@@ -65,7 +73,8 @@
                         <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{reportsController.objList}" draggableColumns="true"    var="report"  >
 
                             <p:column headerText="Report Id">
-                                <p:commandLink value="#{report.reportId}"/>
+                                <p:commandLink process="@this" onclick="callReport('#{report.reportId}')" value="#{report.reportId}"/>
+
 
 
 

@@ -5,55 +5,74 @@
 package com.met.hrmis.util;
 
 import com.met.hrmis.jpa.dao.IEntityManagerFactory;
-import com.met.hrmis.jpa.entities.EmailConfiguration;
+import com.met.hrmis.jpa.entities.EmailConfig;
 import com.met.hrmis.jpa.entities.Employee;
 import com.met.hrmis.jpa.entities.Mail;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import javax.faces.context.FacesContext;
+import java.util.*;
 import javax.persistence.Query;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.web.jsf.FacesContextUtils;
 
 /**
  *
  * @author BERNARD
  */
-public class BirthdayNotifier implements IBirthdayNotifier {
+
+public class BirthdayNotifier implements INotifier {
 
     private IEntityManagerFactory emFactory;
+    
+    private ISendMail mailer;
+    
+    private EmailConfig emailConfig;
+    
+       
+    
+
+   
+
+    public void setMailer(ISendMail mailer) {
+        this.mailer = mailer;
+    }
+    
+    
 
     public void setEmFactory(IEntityManagerFactory emFactory) {
         this.emFactory = emFactory;
     }
 
     @Override
-    @Scheduled(cron = "0 0 8 * * ?")
-    public void notifyHrOfBirthdayCelebrants() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+  //  @Scheduled(cron = "0 0 8 * * ?")
+    
+   // @Scheduled(cron="0 */10 * * * ?")
+    public void alert() {
+        
+        //ok get email config details
+        this.emailConfig = (EmailConfig) emFactory.getEntityManager().
+                    createQuery("select e from EmailConfig e").getResultList().get(0);
+        
 
+        Calendar now = Calendar.getInstance();
+        
+        int month = now.get(Calendar.MONTH)+1; // Note: zero based!
+        int day = now.get(Calendar.DAY_OF_MONTH);
+        
         Query query = emFactory.getEntityManager().createQuery("select e from Employee e where "
-                + "e.dob = :dob");
-        query.setParameter("dob", dateFormat.format(new Date()));  //we always compare with the current date
+                + "month(e.dob) = :month and day(e.dob)= :day");
+        query.setParameter("month", month);
+        query.setParameter("day", day);
 
         ArrayList<Employee> qResult = (ArrayList<Employee>) query.getResultList();
+        
 
-        EmailConfiguration config = (EmailConfiguration) FacesContextUtils.getWebApplicationContext(FacesContext.getCurrentInstance()).getBean("emailConfiguration");
-        ISendMail mailer = (ISendMail) FacesContextUtils.getWebApplicationContext(FacesContext.getCurrentInstance()).getBean("mailer");
-
+       
         Map model = new HashMap();
         model.put("staffList", qResult.toString());
 
         Mail mail = new Mail();
-        mail.setMailFrom(config.getMailSender());
-        mail.setMailTo(config.getBirthdayNotificationSubscribers());
+        mail.setMailFrom(emailConfig.getMailSender());
+        mail.setMailTo(emailConfig.getBirthdaySubscribers());
         mail.setMailSubject("Birthday celebrants for today");
-        mail.setTemplateName("/velocity/birthdayCelebrants.vm");
-        
+        mail.setTemplateName("/velocity/birthday_celebrants.vm");
+
         mail.setMailSendDate(new Date());
         //  mailer.sendMail(empLeaveDetails, mail);
         try {

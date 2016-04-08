@@ -7,11 +7,8 @@ package com.met.hrmis.controllers;
 import com.met.hrmis.jpa.dao.IEntityManagerFactory;
 import com.met.hrmis.jpa.dao.IHrGenericDao;
 import com.met.hrmis.jpa.entities.Employee;
-import com.met.hrmis.util.IEmployeeSearch;
+import com.met.hrmis.util.IEmployeeMethods;
 import java.util.Collection;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.FullTextQuery;
-import org.hibernate.search.query.dsl.QueryBuilder;
 
 /**
  *
@@ -27,9 +24,26 @@ public class EmployeeController3 extends EmployeeController {
         if (searchText == null) {
             return super.getObjList();
         } else {
+           
             return displayItems;
         }
     }
+
+    @Override
+    public void doDelete(Object obj) {
+        super.doDelete(obj);
+        
+        if (searchText==null){
+            // do nothing
+        }else {
+            doSearch();
+        }
+    }
+    
+    
+
+  
+    
 
     public void setDisplayItems(Collection<Employee> displayItems) {
         this.displayItems = displayItems;
@@ -38,6 +52,10 @@ public class EmployeeController3 extends EmployeeController {
     public IEntityManagerFactory getEm() {
         return em;
     }
+
+   
+    
+    
 
     public void setEm(IEntityManagerFactory em) {
         this.em = em;
@@ -58,6 +76,6 @@ public class EmployeeController3 extends EmployeeController {
 
         
 
-        displayItems = ((IEmployeeSearch)ab).EmployeeSearch(searchText);
+        displayItems = ((IEmployeeMethods)ab).EmployeeSearch(searchText);
     }
 }

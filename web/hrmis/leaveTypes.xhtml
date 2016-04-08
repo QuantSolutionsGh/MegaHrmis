@@ -18,17 +18,25 @@
 
                     <h:form id="hello">
                         <p:messages id="msg" globalOnly="false" />
-                        
+
                         <h:panelGrid columns="2" >  
 
 
                             <p:outputLabel for="leaveType" value="Leave Type" />
                             <p:inputText id="leaveType" required="true" value="#{leaveTypesController.currentElement.leaveType}" />
                             
-                           
-                            
-                            
-                           
+                            <p:outputLabel for="leaveCategory" value="Leave Category"/>
+                            <p:selectOneMenu id="leaveCategory" required="true"  value="#{leaveTypesController.currentElement.leaveCategory}">
+                                <f:selectItem itemLabel="Select..." itemValue=""/>
+                                <f:selectItem itemLabel="Annual" itemValue="Annual" />
+                                <f:selectItem itemLabel="Normal" itemValue="Normal"/>
+                                                             
+                            </p:selectOneMenu>
+
+
+
+
+
 
                             <h:panelGroup />
 
@@ -46,6 +54,13 @@
                         </h:panelGrid>
                     </h:form>
                 </p:dialog>
+
+                <p:confirmDialog global="true">
+                    <p:commandButton value="Yes"  type="button" styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"/>
+                </p:confirmDialog>
 
 
 
@@ -73,18 +88,26 @@
 
                             </p:column>
                             
-                           
+                            <p:column headerText="Leave Category">
+                                <p:commandLink value="#{t.leaveCategory}"/>                       
+
+
+
+                            </p:column>
+
+
 
                             <p:column>
                                 <h:panelGroup>
-                                    <p:commandLink value="Edit" process="@this" update=":dlgWindow" actionListener="#{leaveTypesController.doEdit(t)}">
+                                    <p:commandLink  process="@this" update=":dlgWindow" actionListener="#{leaveTypesController.doEdit(t)}">
 
-
-
+                                        <p:graphicImage  value="/templates/edit.png" />
                                     </p:commandLink>
 
                                     <p:spacer width="10"/>
-                                    <p:commandLink value="Delete" process="@this" update="out,:accountGroupForm:info" actionListener="#{leaveTypesController.doDelete(t.id)}"/>
+                                    <p:commandLink process="@this" update="out,:accountGroupForm:info" actionListener="#{leaveTypesController.doDelete(t.id)}">
+                                        <p:graphicImage  value="/templates/delete.png" />
+                                    </p:commandLink>
                                 </h:panelGroup>
 
                             </p:column>

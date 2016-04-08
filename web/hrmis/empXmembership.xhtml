@@ -14,7 +14,7 @@
 
     </h:head>
     <h:body>
-        
+
         <h:form id="hello"  rendered="#{employeeXMembershipController.activeTab=='showEdit'}">
 
 
@@ -34,17 +34,17 @@
                     <f:selectItem  itemLabel="SELECT..." itemValue="" />
                     <f:selectItems value="#{membershipController.objList}" var="p" itemLabel="#{p.membership}" itemValue="#{p}"/>
                 </p:selectOneMenu>
-                
-                 <p:outputLabel for="currency" value="Currency"/>
-                            <p:selectOneMenu id="currency"    required="true" value="#{employeeXMembershipController.currentElement.currency}">
-                                <f:selectItem itemLabel="Select..." itemValue=""/>
-                                <f:selectItem itemLabel="USD" itemValue="USD" />
-                                <f:selectItem itemLabel="GHS" itemValue="GHS"/>
-                                <f:selectItem itemLabel="GBP" itemValue="GBP"/>
 
-                            </p:selectOneMenu>
-                 <p:outputLabel for="amount" value="Subscription Amount" />
-                 <p:inputText id="amount" required="true" value="#{employeeXMembershipController.currentElement.amount}"/>
+                <p:outputLabel for="currency" value="Currency"/>
+                <p:selectOneMenu id="currency"    required="true" value="#{employeeXMembershipController.currentElement.currency}">
+                    <f:selectItem itemLabel="Select..." itemValue=""/>
+                    <f:selectItem itemLabel="USD" itemValue="USD" />
+                    <f:selectItem itemLabel="GHS" itemValue="GHS"/>
+                    <f:selectItem itemLabel="GBP" itemValue="GBP"/>
+
+                </p:selectOneMenu>
+                <p:outputLabel for="amount" value="Subscription Amount" />
+                <p:inputText id="amount" required="true" value="#{employeeXMembershipController.currentElement.amount}"/>
 
 
                 <h:panelGroup />
@@ -65,6 +65,13 @@
 
 
         </h:form>
+
+        <p:confirmDialog global="true">
+            <p:commandButton value="Yes"  type="button" styleClass="ui-confirmdialog-yes"
+                             icon="ui-icon-check"/>
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                             icon="ui-icon-close"/>
+        </p:confirmDialog>
 
 
 
@@ -105,14 +112,16 @@
 
                     <p:column>
                         <h:panelGroup>
-                            <p:commandLink value="Edit" process="@this" update="@all" actionListener="#{employeeXMembershipController.doEdit(m)}">
-
+                            <p:commandLink  process="@this" update="@all" actionListener="#{employeeXMembershipController.doEdit(m)}">
+                                <p:graphicImage  value="/templates/edit.png" />
 
 
                             </p:commandLink>
 
                             <p:spacer width="10"/>
-                            <p:commandLink value="Delete" process="@this" update="@all" actionListener="#{employeeXMembershipController.doDelete(m.id)}"/>
+                            <p:commandLink process="@this" update="@all" actionListener="#{employeeXMembershipController.doDelete(m.id)}">
+                              <p:graphicImage  value="/templates/delete.png" />
+                            </p:commandLink>
                         </h:panelGroup>
 
                     </p:column>

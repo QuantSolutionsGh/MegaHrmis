@@ -28,7 +28,7 @@
                             <h:panelGroup />
 
                             <p:column>
-                                <p:commandButton value="Save"  process="@form"
+                                <p:commandButton value="Save"  process="@form" 
                                                  update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"  
                                                  actionListener="#{branchController.doSave()}" />
                                 <p:spacer width="5"/>
@@ -42,6 +42,14 @@
 
                     </p:dialog>
                 </h:form>
+
+                <p:confirmDialog global="true">
+                    <p:commandButton value="Yes"  type="button" styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"/>
+                </p:confirmDialog>
+
 
 
 
@@ -59,10 +67,11 @@
                             </p:commandLink>
 
                         </h:panelGroup>
+                        
                         <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{branchController.objList}" draggableColumns="true"    var="branch"  >
 
-                            <p:column headerText="Branch Name">
-                                <p:commandLink value="#{branch.branchName}"/>
+                            <p:column  headerText="Branch Name">
+                                <p:commandLink id="he" value="#{branch.branchName}"/>
 
 
 
@@ -70,14 +79,18 @@
 
                             <p:column>
                                 <h:panelGroup>
-                                    <p:commandLink value="Edit" process="@this" update=":hello" actionListener="#{branchController.doEdit(branch)}">
+                                    <p:commandLink  title="edit" process="@this" update=":hello" actionListener="#{branchController.doEdit(branch)}">
 
-
+                                        <p:graphicImage  value="/templates/edit.png" />
 
                                     </p:commandLink>
 
                                     <p:spacer width="10"/>
-                                    <p:commandLink value="Delete" process="@this" update="out,:accountGroupForm:info" actionListener="#{branchController.doDelete(branch.id)}"/>
+                                    <p:commandLink title="delete" process="@this" update="out,:accountGroupForm:info" actionListener="#{branchController.doDelete(branch.id)}">
+                                        <p:graphicImage  value="/templates/delete.png" />
+                                        <p:confirm  header="Confirm" message="Are you sure you want to delete this record?" icon="ui-icon-warning" />
+
+                                    </p:commandLink>
                                 </h:panelGroup>
 
                             </p:column>

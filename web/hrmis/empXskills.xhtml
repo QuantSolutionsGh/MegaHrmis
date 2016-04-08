@@ -14,7 +14,7 @@
 
     </h:head>
     <h:body>
-        
+
         <h:form id="hello"  rendered="#{employeeXSkillsController.activeTab=='showEdit'}">
 
 
@@ -34,7 +34,7 @@
                     <f:selectItem  itemLabel="SELECT..." itemValue="" />
                     <f:selectItems value="#{skillsController.objList}" var="p" itemLabel="#{p.skill}" itemValue="#{p}"/>
                 </p:selectOneMenu>
-                
+
                 <p:outputLabel for="experience" value="Years Of Experience" />
                 <p:inputText id="experience" value="#{employeeXSkillsController.currentElement.yearsOfExperience}" />
 
@@ -57,6 +57,13 @@
 
 
         </h:form>
+
+        <p:confirmDialog global="true">
+            <p:commandButton value="Yes"  type="button" styleClass="ui-confirmdialog-yes"
+                             icon="ui-icon-check"/>
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                             icon="ui-icon-close"/>
+        </p:confirmDialog>
 
 
 
@@ -82,7 +89,7 @@
 
 
                     </p:column>
-                    
+
                     <p:column headerText="Years Of Experience">
                         <p:commandLink value="#{m.yearsOfExperience}"/>                       
 
@@ -92,14 +99,18 @@
 
                     <p:column>
                         <h:panelGroup>
-                            <p:commandLink value="Edit" process="@this" update="@all" actionListener="#{employeeXSkillsController.doEdit(m)}">
-
+                            <p:commandLink  process="@this" update="@all" actionListener="#{employeeXSkillsController.doEdit(m)}">
+                                <p:graphicImage  value="/templates/edit.png" />
 
 
                             </p:commandLink>
 
                             <p:spacer width="10"/>
-                            <p:commandLink value="Delete" process="@this" update="@all" actionListener="#{employeeXSkillsController.doDelete(m.id)}"/>
+                            <p:commandLink  
+                                process="@this" update="@all" 
+                                actionListener="#{employeeXSkillsController.doDelete(m.id)}">
+                                <p:graphicImage  value="/templates/delete.png" />
+                            </p:commandLink>
                         </h:panelGroup>
 
                     </p:column>

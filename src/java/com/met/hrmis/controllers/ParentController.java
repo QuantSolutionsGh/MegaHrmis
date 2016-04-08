@@ -21,6 +21,7 @@ public abstract class ParentController<T> implements IGenericController {
     private IHrGenericDao genericDao;
     private String dlgWindow;
     private String dlgTitle;
+    private Collection<T> displayItems;
     //  protected abstract IHrGenericDao getDao();
     //  protected abstract Class<T> getNewElement();
     //  protected abstract String getDlgWindow();
@@ -81,9 +82,14 @@ public abstract class ParentController<T> implements IGenericController {
         // obj.getClass().getField("id").get(obj)
 
         try {
-            
-           
+
+
             genericDao.delete(obj);
+            
+            
+            //ok lets refresh our view
+            
+            displayItems = (Collection<T>)genericDao.findAll();
             FacesContext.getCurrentInstance().addMessage(null,
                     new FacesMessage(FacesMessage.SEVERITY_INFO, "Item has been deleted.", null));
         } catch (Exception e) {
@@ -126,9 +132,13 @@ public abstract class ParentController<T> implements IGenericController {
     public void doSave() {
         try {
 
-           
-            
+
+
             genericDao.update(currentElement);  //calls merege and inserts if it
+            
+            //ok lets refresh our view
+            
+            displayItems = (Collection<T>)genericDao.findAll();
 
             this.currentElement = null;
 
@@ -147,6 +157,14 @@ public abstract class ParentController<T> implements IGenericController {
     @Override
     public Collection<? extends Object> getObjList() {
 
-        return (Collection<T>) genericDao.findAll();
+        if (displayItems==null) {
+            displayItems = (Collection<T>) genericDao.findAll();
+            
+        } 
+        return displayItems;
+
+
+
+
     }
 }

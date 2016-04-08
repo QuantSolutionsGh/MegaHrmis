@@ -1,0 +1,189 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+
+
+    </h:head>
+    <h:body>
+        <ui:composition  template="/templates/commonlayout.xhtml">
+            <ui:define name="content">
+
+                <p:dialog  id="dlgWindow" closable="false" showEffect="highlight"  header="#{trainingController.dlgTitle}"  modal="true" position="center,center" widgetVar="dlgWindow" >
+
+                    <h:form id="hello">
+                        <p:messages id="msg" globalOnly="false" />
+                        <p:column colspan="2" rendered="#{trainingController.currentElement.id != null}">
+                            <p:commandLink value="Participants |" process="@this" 
+                                           actionListener="#{trainingController.dispTrainingParticipants(trainingController.currentElement.id)}">
+
+                            </p:commandLink>
+                            <p:spacer width="5"/>
+                            <p:commandLink value="Cost Breakdown " process="@this" 
+                                           actionListener="#{trainingController.dispCostItems(trainingController.currentElement.id)}">
+                            </p:commandLink>
+
+
+                        </p:column>
+                        <h:panelGrid columns="2" >  
+
+
+                            <p:outputLabel for="title" value="Course Title" />
+                            <p:inputText id="title" required="true" value="#{trainingController.currentElement.courseTitle}" />
+
+                            <p:outputLabel for="fmDate" value="Start Date" />
+                            <p:calendar id="fmDate"  pattern="dd-MM-yyyy"  required="true" value="#{trainingController.currentElement.startDate}">
+                                <f:convertDateTime pattern="dd-MM-yyyy"   />
+                            </p:calendar>
+
+
+                            <p:outputLabel for="endDate" value="End Date" />
+                            <p:calendar id="endDate"  pattern="dd-MM-yyyy"  required="true" value="#{trainingController.currentElement.endDate}">
+                                <f:convertDateTime pattern="dd-MM-yyyy"   />
+                            </p:calendar>
+
+                            <p:outputLabel for="trainingType" value="Training Type" />
+                            <p:selectOneMenu id="trainingType"    required="true" value="#{trainingController.currentElement.trainingType}">
+                                <f:selectItem itemLabel="Select..." itemValue=""/>
+                                <f:selectItem itemLabel="Local" itemValue="Local" />
+                                <f:selectItem itemLabel="OverSeas" itemValue="Overseas"/>
+
+                            </p:selectOneMenu>
+
+                            <p:outputLabel for="venue" value="Venue" />
+                            <p:inputText id="venue" required="true" value="#{trainingController.currentElement.venue}" />
+                            <p:outputLabel for="facilitator" value="Facilitator" />
+                            <p:inputText id="facilitator" required="true" value="#{trainingController.currentElement.facilitator}" />
+
+
+
+
+
+
+                            <h:panelGroup />
+
+                            <p:column>
+                                <p:commandButton value="Save"  process="@form"
+                                                 update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"  
+                                                 actionListener="#{trainingController.doSave()}" />
+                                <p:spacer width="5"/>
+                                <p:commandButton value="Cancel" process="@this" actionListener="#{trainingController.doCancel()}" 
+                                                 update=":accountGroupForm:out,msg,hello,:accountGroupForm:info"           />
+
+                            </p:column>
+
+
+                        </h:panelGrid>
+                    </h:form>
+                </p:dialog>
+
+                <p:confirmDialog global="true">
+                    <p:commandButton value="Yes"  type="button" styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"/>
+                </p:confirmDialog>
+
+
+
+
+
+
+                <h:form id="accountGroupForm">
+                    <p:messages  id="info" closable="true" autoUpdate="true" />
+                    <h:panelGrid id="tableAccountGroup"  width="80%" columns="1" >
+                        <h:panelGroup>
+
+                            <p:commandLink value="New Training"  process="@this" update=":dlgWindow" actionListener="#{trainingController.doNew()}" >
+
+
+
+
+
+                            </p:commandLink>
+
+
+                        </h:panelGroup>
+                        <p:dataTable id="out" paginator="true"  rows="10"   paginatorAlwaysVisible="false"   value ="#{trainingController.objList}" draggableColumns="true"    var="t"  >
+
+                            <p:column headerText="Course Title">
+                                <p:commandLink value="#{t.courseTitle}"/>                       
+
+
+
+                            </p:column>
+
+                            <p:column headerText="Training Type">
+                                <p:commandLink value="#{t.trainingType}"/>                       
+
+
+
+                            </p:column>
+
+                            <p:column headerText="Start Date">
+                                <p:commandLink value="#{t.startDate}"/>                       
+
+
+
+                            </p:column>
+
+                            <p:column headerText="End Date">
+                                <p:commandLink value="#{t.endDate}"/>                       
+
+
+
+                            </p:column>
+
+                            <p:column headerText="Venue">
+                                <p:commandLink value="#{t.venue}"/>                       
+
+
+
+                            </p:column>
+                            <p:column headerText="Facilitator">
+                                <p:commandLink value="#{t.facilitator}"/>                       
+
+
+
+                            </p:column>
+
+                            <p:column>
+                                <h:panelGroup>
+                                    <p:commandLink  process="@this" update=":dlgWindow" actionListener="#{trainingController.doEdit(t)}">
+                                        <p:graphicImage  value="/templates/edit.png" />
+
+
+
+                                    </p:commandLink>
+
+                                    <p:spacer width="10"/>
+                                    <p:commandLink  process="@this" update="out,:accountGroupForm:info" actionListener="#{trainingController.doDelete(t.id)}">
+                                        <p:graphicImage  value="/templates/delete.png" />
+                                        <p:confirm  header="Confirm" message="Are you sure you want to delete this record?" icon="ui-icon-warning" />
+
+                                    </p:commandLink>
+                                </h:panelGroup>
+
+                            </p:column>
+
+
+
+
+
+
+                        </p:dataTable>
+                    </h:panelGrid>
+
+
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

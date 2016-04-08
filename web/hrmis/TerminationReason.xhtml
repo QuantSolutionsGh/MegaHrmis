@@ -59,10 +59,10 @@
                             </p:commandLink>
 
                         </h:panelGroup>
-                        <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{terminationReasonController.objList}" draggableColumns="true"    var="temination"  >
+                        <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{terminationReasonController.objList}" draggableColumns="true"    var="termination"  >
 
                             <p:column headerText="Reason">
-                                <p:commandLink value="#{termination.relation}"/>                       
+                                <p:commandLink value="#{termination.reason}"/>                       
 
 
 

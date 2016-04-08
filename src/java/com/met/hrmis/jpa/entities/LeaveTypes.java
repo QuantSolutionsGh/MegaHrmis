@@ -27,6 +27,18 @@ public class LeaveTypes implements Serializable {
     private String id;
     @Column(name="LEAVE_TYPE")
     private String leaveType;
+    @Column(name="LEAVE_CATEGORY")
+    private String leaveCategory;
+
+    public String getLeaveCategory() {
+        return leaveCategory;
+    }
+
+    public void setLeaveCategory(String leaveCategory) {
+        this.leaveCategory = leaveCategory;
+    }
+    
+    
 
     public String getLeaveType() {
         return leaveType;

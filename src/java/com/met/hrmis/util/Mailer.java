@@ -57,6 +57,7 @@ public class Mailer implements ISendMail {
                 message.setText(text, true);
             }
         };
+        
         this.mailSender.send(preparator);
     }
 }

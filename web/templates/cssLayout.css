@@ -13,6 +13,29 @@
     width : 50px;
 }
 
+.ui-icon-settingdds{
+    background-image: url(/megahrmis/faces/templates/settings.png);
+   
+  background-size:cover; 
+  background-position:center center; 
+  background-repeat:no-repeat; 
+   background-position: center !important;
+    
+   background-position: center !important;
+    height : 16px;
+    width : 16px;
+   
+}
+
+.ui-icon-employeehh{
+    background-image: url(/megahrmis/faces/templates/settings.png);
+  
+  background-size:cover; 
+  background-position:center center; 
+  background-repeat:no-repeat; 
+  
+}
+
 
 #bottom {
     position: relative;

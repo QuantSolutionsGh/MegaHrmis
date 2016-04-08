@@ -61,6 +61,13 @@
 
         </h:form>
 
+        <p:confirmDialog global="true">
+            <p:commandButton value="Yes"  type="button" styleClass="ui-confirmdialog-yes"
+                             icon="ui-icon-check"/>
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                             icon="ui-icon-close"/>
+        </p:confirmDialog>
+
 
 
         <h:form id="accountGroupForm" rendered="#{employeeHistoryController.activeTab=='showAll'}"  >
@@ -85,7 +92,7 @@
                         </p:commandLink>
                     </p:column>
                     <p:column headerText="To Date">
-                         <p:commandLink>
+                        <p:commandLink>
                             <p:outputLabel value="#{m.toDate}"/> 
                         </p:commandLink>  
                     </p:column>
@@ -98,14 +105,17 @@
 
                     <p:column>
                         <h:panelGroup>
-                            <p:commandLink value="Edit" process="@this" update="@all" actionListener="#{employeeHistoryController.doEdit(m)}">
+                            <p:commandLink process="@this" update="@all" actionListener="#{employeeHistoryController.doEdit(m)}">
 
-
+                                <p:graphicImage  value="/templates/edit.png" />
 
                             </p:commandLink>
 
                             <p:spacer width="10"/>
-                            <p:commandLink value="Delete" process="@this" update="@all" actionListener="#{employeeHistoryController.doDelete(m.id)}"/>
+                            <p:commandLink  process="@this" update="@all" actionListener="#{employeeHistoryController.doDelete(m.id)}">
+                                <p:graphicImage  value="/templates/delete.png" />
+                            </p:commandLink>
+
                         </h:panelGroup>
 
                     </p:column>

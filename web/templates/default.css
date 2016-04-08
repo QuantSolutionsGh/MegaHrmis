@@ -12,6 +12,84 @@ body {
     width : 50px;
 }
 
+.ui-icon-settings{
+    background-image: url(/megahrmis/faces/templates/settings.png) !important;
+   background-position: center !important;
+    height : 40px;
+    width : 40px;
+    
+    background-size:cover; 
+  background-position:center center; 
+  background-repeat:no-repeat;
+}
+
+.ui-icon-employee{
+    background-image: url(/megahrmis/faces/templates/user.png) !important;
+   background-position: center !important;
+    height : 46px;
+    width : 40px;
+    
+    background-size:cover; 
+  background-position:center center; 
+  background-repeat:no-repeat;
+}
+
+.ui-icon-training{
+    background-image: url(/megahrmis/faces/templates/teacher.png) !important;
+   background-position: center !important;
+    height : 46px;
+    width : 40px;
+    
+    background-size:cover; 
+  background-position:center center; 
+  background-repeat:no-repeat;
+}
+
+.ui-icon-leave{
+    background-image: url(/megahrmis/faces/templates/travel.png) !important;
+   background-position: center !important;
+    height : 40px;
+    width : 40px;
+    
+    background-size:cover; 
+  background-position:center center; 
+  background-repeat:no-repeat;
+}
+
+.ui-icon-report{
+    background-image: url(/megahrmis/faces/templates/report.png) !important;
+   background-position: center !important;
+    height : 40px;
+    width : 40px;
+    
+    background-size:cover; 
+  background-position:center center; 
+  background-repeat:no-repeat;
+}
+
+
+.ui-icon-delete{
+    background-image: url(/megahrmis/faces/templates/delete.png) !important;
+   background-position: center !important;
+    height : 40px;
+    width : 40px;
+    
+    background-size:cover; 
+  background-position:center center; 
+  background-repeat:no-repeat;
+}
+
+.ui-icon-edit{
+    background-image: url(/megahrmis/faces/templates/edit.png) !important;
+   background-position: center !important;
+    height : 40px;
+    width : 40px;
+    
+    background-size:cover; 
+  background-position:center center; 
+  background-repeat:no-repeat;
+}
+
 .ui-icon-warning{
     background-image: url(/megahrmis/faces/templates/Warning.png)  !important;
     height : 50px;

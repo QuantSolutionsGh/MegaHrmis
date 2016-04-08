@@ -4,24 +4,33 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions"
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>Facelet Title</title>
 
 
     </h:head>
-    <h:body>
+    <h:body id="entirePage">
         <ui:composition  template="/templates/commonlayout.xhtml">
             <ui:define name="content">
+                <pe:blockUI id="block" widgetVar="blockUIWidget">  
+                    <h:panelGrid columns="2">  
+                        <h:graphicImage   value="/templates/loader.GIF"  
+                                          style="margin-right: 12px; vertical-align: middle;"/>  
 
+                    </h:panelGrid>  
+                </pe:blockUI>  
+
+                
 
 
                 <p:dialog  id="dlgWindow" closable="false"   header="#{employeeController.dlgTitle}"  modal="true" position="center,center" widgetVar="dlgWindow" >
                     <h:form id="hello">
 
-                        <p:growl id="msg"   globalOnly="false"/>
+                        <p:messages id="msg"   globalOnly="false"/>
                         <p:column colspan="2" rendered="#{employeeController.currentElement.id != null}">
-                            <p:commandLink value="Professional Qualifications |" process="@this" actionListener="#{employeeController.dispEmpMemberships(employeeController.currentElement.id)}">
+                            <p:commandLink  value="Professional Qualifications |" process="@this" actionListener="#{employeeController.dispEmpMemberships(employeeController.currentElement.id)}">
 
                             </p:commandLink>
                             <p:spacer width="5"/>
@@ -38,8 +47,12 @@
                             <p:commandLink value="Skills |" process="@this" actionListener="#{employeeController.dispEmpSkills(employeeController.currentElement.id)}">
                             </p:commandLink>
                             <p:spacer width="5"/>
-                            <p:commandLink value="Family Details" process="@this" actionListener="#{employeeController.dispEmpFamily(employeeController.currentElement.id)}"></p:commandLink>
+                            <p:commandLink value="Family Details |" process="@this" actionListener="#{employeeController.dispEmpFamily(employeeController.currentElement.id)}"></p:commandLink>
 
+                            <p:spacer width="5"/>
+                            <p:commandLink value="Leave Planner |" process="@this" actionListener="#{employeeController.dispEmpLeavePlanner(employeeController.currentElement.id)}"></p:commandLink>
+
+                            
                             <p:spacer width="5"/>
                             <p:commandLink value="Leave Details" process="@this" actionListener="#{employeeController.dispLeaveDetails(employeeController.currentElement.id)}"></p:commandLink>
 
@@ -58,8 +71,8 @@
                             <p:outputLabel for="firstName" value="First Name"/>
                             <p:inputText id="firstName" required="true" size="40" value="#{employeeController.currentElement.firstName}"/>
                             <p:outputLabel for="dob" value="Date Of Birth"/>
-                            <p:calendar id="dob"  pattern="dd-MM-yyyy"  required="true" value="#{employeeController.currentElement.dob}">
-                                <f:convertDateTime pattern="dd-MM-yyyy"   />
+                            <p:calendar id="dob"  pattern="dd-MMM-yyyy"  required="true" value="#{employeeController.currentElement.dob}">
+                                <f:convertDateTime pattern="dd-MMM-yyyy"   />
                             </p:calendar>
 
 
@@ -141,6 +154,14 @@
                             <p:calendar id="empDate"  pattern="dd-MM-yyyy"  required="true" value="#{employeeController.currentElement.empDate}">
                                 <f:convertDateTime pattern="dd-MM-yyyy"   />
                             </p:calendar>
+                            
+                            <p:outputLabel for="terminationDate" value="Termination Date"/>
+                            <p:calendar id="terminationDate"  pattern="dd-MM-yyyy"   value="#{employeeController.currentElement.contractTerminationDate}">
+                                <f:convertDateTime pattern="dd-MM-yyyy"   />
+                            </p:calendar>
+                            
+                            <h:panelGroup/>
+                            <h:panelGroup/>
 
 
 
@@ -148,22 +169,23 @@
 
                             <h:panelGroup />
                             <h:panelGroup/>
+                            <h:panelGroup/>
 
 
 
                             <h:panelGroup/>
 
                             <p:column>
-                                <p:commandButton value="Save"  process="@form"
-                                                 update=":accountGroupForm:out,hello:msg,hello"  
+                                <p:commandButton value="Save"  process="@form" disabled="#{employeeController.currentElement.contractTerminationDate!=null}"
+                                                 update=":accountGroupForm:out,hello:msg,hello"   
                                                  actionListener="#{employeeController.doSave()}" />
                                 <p:spacer width="5"/>
                                 <p:commandButton value="Cancel" process="@this" actionListener="#{employeeController.doCancel()}" 
                                                  />
                                 <p:spacer width="5" />
+                              
 
-                                <p:commandButton value="Terminate Employment" rendered="#{employeeController.currentElement.id != null}" />
-
+                              
                             </p:column>
 
 
@@ -187,15 +209,17 @@
 
 
 
+
+
                 <h:form id="accountGroupForm">   
-                    <p:messages  id="info" closable="true" autoUpdate="false" />
+                    <p:messages  id="info" closable="true" autoUpdate="true" />
                     <p:fieldset  legend="Search" toggleable="true"  collapsed="true" toggleSpeed="500">
 
                         <h:panelGrid columns="1" cellpadding="5">
                             <p:outputLabel for="sEmpId" value="Search Text" />
                             <p:inputText id="sEmpId"  size="25" value="#{employeeController.searchText}" />
-                            
-                            <p:commandButton style="height :40px; width: 100px"   icon="ui-icon-searcho" value="Search" actionListener="#{employeeController.doSearch}"  update="out,:accountGroupForm:info"/>
+
+                            <p:commandButton  style="height :40px; width: 100px"   icon="ui-icon-searcho" value="Search" actionListener="#{employeeController.doSearch}"  update="out,:accountGroupForm:info"/>
 
 
 
@@ -215,32 +239,21 @@
                         <h:panelGroup>
 
 
-                            <p:commandButton value="New Staff"  style="height :60px; width: 150px" icon="ui-icon-profile" process="@this" update=":dlgWindow" actionListener="#{employeeController.doNew()}"/>
+                            <p:commandButton onstart="PF('blockUIWidget').block()" oncomplete="PF('blockUIWidget').unblock()" value="New Staff" id="newBtn" style="height :60px; width: 150px" icon="ui-icon-profile" process="@this" update=":dlgWindow" actionListener="#{employeeController.doNew()}"/>
 
 
                         </h:panelGroup>
-                        <p:ajaxStatus  >
-                            <f:facet name="start">
 
-                                <h:outputLabel style="color :red;font-family:Tahoma;font-size:5" value="A moment please..."/>
-
-                            </f:facet>
-                            <f:facet name="complete">
-
-                                <h:outputLabel value=""/>
-                            </f:facet>
-
-                        </p:ajaxStatus>
-                        <p:dataTable id="out" paginator="true"  rows="15"   paginatorAlwaysVisible="false"   value ="#{employeeController.displayItems}" draggableColumns="true"    var="emp"  >
+                        <p:dataTable id="out" paginator="true"  rows="10"   paginatorAlwaysVisible="false"   value ="#{employeeController.displayItems}" draggableColumns="true"    var="emp"  >
 
                             <p:column headerText="Staff">
-                                <p:commandLink  value="#{emp.empId}">
+                                <p:outputLabel  value="#{emp.empId}">
 
-                                </p:commandLink>
+                                </p:outputLabel>
                             </p:column>
 
                             <p:column headerText="Fullname">
-                                <p:commandLink value="#{emp}"/>
+                                <p:outputLabel value="#{emp}"/>
 
 
 
@@ -251,17 +264,17 @@
 
                             <p:column >
                                 <h:panelGroup id="submenu">
-                                    <p:commandLink value="Edit" id="edit" process="@this" update=":dlgWindow" actionListener="#{employeeController.doEdit(emp)}">
+                                    <p:commandLink  onstart="PF('blockUIWidget').block()" oncomplete="PF('blockUIWidget').unblock()" id="edit" title="edit" process="@this" update=":dlgWindow" actionListener="#{employeeController.doEdit(emp)}">
 
-
+                                        <p:graphicImage  value="/templates/edit.png" />
 
                                     </p:commandLink>
 
 
 
                                     <p:spacer width="10"/>
-                                    <p:commandLink id="oDelete" value="Delete"   process="@this" update="out,:accountGroupForm:info" actionListener="#{employeeController.doDelete(emp.id)}">
-                                        
+                                    <p:commandLink id="oDelete" onstart="PF('blockUIWidget').block()" oncomplete="PF('blockUIWidget').unblock()" title="delete"   process="@this" update="out,:accountGroupForm:info" actionListener="#{employeeController.doDelete(emp.id)}">
+                                        <p:graphicImage  value="/templates/delete.png" />
                                         <p:confirm  header="Confirm" message="Are you sure you want to delete this record?" icon="ui-icon-warning" />
                                     </p:commandLink>
                                 </h:panelGroup>
@@ -278,7 +291,10 @@
 
 
 
+
+
                 </h:form>
+
 
             </ui:define>
         </ui:composition>

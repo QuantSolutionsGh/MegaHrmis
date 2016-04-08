@@ -22,8 +22,8 @@
 
                             <p:outputLabel for="membership" value="Professional Membership" />
                             <p:inputText id="membership" required="true" value="#{membershipController.currentElement.membership}" />
-                            
-                           
+
+
 
                             <h:panelGroup />
 
@@ -41,6 +41,13 @@
                         </h:panelGrid>
                     </h:form>
                 </p:dialog>
+
+                <p:confirmDialog global="true">
+                    <p:commandButton value="Yes"  type="button" styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"/>
+                </p:confirmDialog>
 
 
 
@@ -70,14 +77,16 @@
 
                             <p:column>
                                 <h:panelGroup>
-                                    <p:commandLink value="Edit" process="@this" update=":dlgWindow" actionListener="#{membershipController.doEdit(pm)}">
+                                    <p:commandLink process="@this" update=":dlgWindow" actionListener="#{membershipController.doEdit(pm)}">
 
-
+                                        <p:graphicImage  value="/templates/edit.png" />
 
                                     </p:commandLink>
 
                                     <p:spacer width="10"/>
-                                    <p:commandLink value="Delete" process="@this" update="out,:accountGroupForm:info" actionListener="#{membershipController.doDelete(pm.id)}"/>
+                                    <p:commandLink process="@this" update="out,:accountGroupForm:info" actionListener="#{membershipController.doDelete(pm.id)}">
+                                        <p:graphicImage  value="/templates/delete.png" />
+                                    </p:commandLink>
                                 </h:panelGroup>
 
                             </p:column>

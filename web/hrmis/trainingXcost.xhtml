@@ -73,6 +73,13 @@
 
         </h:form>
 
+        <p:confirmDialog global="true">
+            <p:commandButton value="Yes"  type="button" styleClass="ui-confirmdialog-yes"
+                             icon="ui-icon-check"/>
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                             icon="ui-icon-close"/>
+        </p:confirmDialog>
+
 
 
         <h:form id="accountGroupForm" rendered="#{trainingXItemCostController.activeTab=='showAll'}"  >
@@ -91,7 +98,7 @@
                 </h:panelGroup>
                 <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{trainingXItemCostController.objList}" draggableColumns="true"    var="m"  >
 
-                    
+
                     <p:column headerText="Cost Type">
                         <p:commandLink value="#{m.trainingCostItem}"/>                       
 

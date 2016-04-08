@@ -9,13 +9,17 @@ import java.util.Collection;
 import java.util.Date;
 import javax.persistence.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.search.annotations.*;
 
 /**
  *
  * @author BERNARD
  */
 @Entity
+@Indexed
 @org.hibernate.annotations.Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 public class Training implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -24,6 +28,7 @@ public class Training implements Serializable {
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @Column(name = "ID")
     private String id;
+    @Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
     @Column(name="COURSE_TITLE")
     private String courseTitle;
     
@@ -36,9 +41,11 @@ public class Training implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date endDate;
     
+    @Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
     @Column(name="VENUE")
     private String venue;
     
+    @Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)    
     @Column(name="FACILITATOR")
     private String facilitator;
     

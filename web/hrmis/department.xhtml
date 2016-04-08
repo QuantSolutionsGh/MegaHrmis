@@ -42,6 +42,13 @@
                     </h:form>
                 </p:dialog>
 
+                <p:confirmDialog global="true">
+                    <p:commandButton value="Yes"  type="button" styleClass="ui-confirmdialog-yes"
+                                     icon="ui-icon-check"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                                     icon="ui-icon-close"/>
+                </p:confirmDialog>
+
 
 
 
@@ -70,14 +77,16 @@
 
                             <p:column>
                                 <h:panelGroup>
-                                    <p:commandLink value="Edit" process="@this" update=":dlgWindow" actionListener="#{departmentController.doEdit(department)}">
-
+                                    <p:commandLink process="@this" update=":dlgWindow" actionListener="#{departmentController.doEdit(department)}">
+                                        <p:graphicImage  value="/templates/edit.png" />
 
 
                                     </p:commandLink>
 
                                     <p:spacer width="10"/>
-                                    <p:commandLink value="Delete" process="@this" update="out,:accountGroupForm:info" actionListener="#{departmentController.doDelete(department.id)}"/>
+                                    <p:commandLink  process="@this" update="out,:accountGroupForm:info" actionListener="#{departmentController.doDelete(department.id)}">
+                                        <p:graphicImage  value="/templates/delete.png" />
+                                    </p:commandLink>
                                 </h:panelGroup>
 
                             </p:column>

@@ -33,6 +33,8 @@
                 font-family: Arial,sans-serif;
                 font-size:12pt;}
 
+           
+
             .centeredBox {
                 width: 100%;
                 height: 100%; /* Firefox */
@@ -57,29 +59,29 @@
 
         </style>
     </h:head>
-     <h:body>
-        
+    <h:body>
+
         <p:focus />
-        
+
         <div class="centeredBox">
             <h:form id="loginForm" prependId="false">
                 <!-- Messages must be global here, to show bad credentials -->
-                
+
 
 
                 <h:panelGrid  bgcolor= "lavender" columns="2"   border="0" cellpadding="3" cellspacing="3">
-                    <p:graphicImage url="metLogo.jpg" alt="Met Insurance" title="MET Broker Portal"
+                    <p:graphicImage url="/templates/security.png" alt="Met Insurance" title="MET Broker Portal"
                                     width="149" height="160"/>
                     <h:panelGrid columns="3"  border="0" cellpadding="5" cellspacing="5" headerClass="login-heading">
                         <f:facet  name="header"> 
-                            
-                            <h:outputText  value="Mega HrMIS - Please Login" /> 
-                           
+
+                            <h:outputText  value="MEGAHRMIS - Please Login" /> 
+
                             <p:messages     globalOnly="false" />
-                            
-                        
+
+
                         </f:facet>
-                        
+
                         <h:outputLabel for="j_username"  value="User: * " />  
                         <p:inputText id="j_username" value="#{loginController.username}" required="true" label="username"  requiredMessage="Username is required"/>  
                         <h:message for="j_Fusername" display="text"  class ="errorline"/>

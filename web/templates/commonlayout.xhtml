@@ -5,6 +5,21 @@
       xmlns:h="http://java.sun.com/jsf/html">
 
     <h:head>
+
+        <script type="text/javascript" language="javascript">
+            
+            function callReport(report){
+                var popup = null;
+                
+                //   var cust = custCode.value;
+                //     var datefm = fmDate.value;
+                //   var dateto = toDate.value;
+                //  popup = window.open('/BrokerPortal/frameset?__report=cust_statement.rptdesign','report','height=400,width=800,toolbar=no,menubar=no,scrollbars=yes');
+                popup=window.open('/megahrmis/frameset?__report='+report+'.rptdesign','report','height=400,width=800,toolbar=no,menubar=no,scrollbars=yes');
+                popup.focus;
+            }
+            
+        </script>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link href="/megahrmis/faces/templates/default.css" rel="stylesheet" type="text/css" />
         <link href="/megahrmis/faces/templates/cssLayout.css" rel="stylesheet" type="text/css" />
@@ -19,9 +34,16 @@
             </ui:insert>
         </div>
         <div>
-            
+
             <div id="content" class="center_content" >
                 <ui:insert name="content">Content</ui:insert>
+            </div>
+        </div>
+        
+         <div>
+
+            <div id="bottom" class="bottom_content" >
+                Designed by Quant Solutions GH 2015
             </div>
         </div>
 

@@ -14,7 +14,7 @@
 
     </h:head>
     <h:body>
-        
+
         <h:form id="hello"  rendered="#{trainingXEmployeeController.activeTab=='showEdit'}">
 
 
@@ -34,8 +34,8 @@
                     <f:selectItem  itemLabel="SELECT..." itemValue="" />
                     <f:selectItems value="#{employeeController.objList}" var="e" itemLabel="#{e}" itemValue="#{e}"/>
                 </p:selectOneMenu>
-                
-                
+
+
 
 
                 <h:panelGroup />
@@ -56,6 +56,13 @@
 
 
         </h:form>
+
+        <p:confirmDialog global="true">
+            <p:commandButton value="Yes"  type="button" styleClass="ui-confirmdialog-yes"
+                             icon="ui-icon-check"/>
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                             icon="ui-icon-close"/>
+        </p:confirmDialog>
 
 
 
@@ -81,7 +88,7 @@
 
 
                     </p:column>
-                    
+
 
                     <p:column>
                         <h:panelGroup>

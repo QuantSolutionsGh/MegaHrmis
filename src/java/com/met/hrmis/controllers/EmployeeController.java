@@ -105,6 +105,23 @@ public class EmployeeController extends ParentController {
     }
     
     
+    public void dispEmpLeavePlanner(String id){
+        Map<String,Object> options = new HashMap<>();
+              
+
+        options.put("modal", true);
+        options.put("draggable", false);
+        options.put("resizable", false);
+        options.put("contentHeight", 320);
+        /* we are storing the id in the session*/
+        FacesUtils.setSessionMapValue("id", id);
+        
+        
+
+        RequestContext.getCurrentInstance().openDialog("empXLeavePlanner",options,null);
+    }
+    
+    
     public void dispEmpHistory(String id){
         Map<String,Object> options = new HashMap<>();
               

@@ -22,24 +22,36 @@
 
 
             <p:messages  id="info" closable="true"  />
+
+
             <h:panelGrid id="tableAccountGroup"  width="100%" columns="1" >
 
-                <p:dataTable id="out" paginator="true"   paginatorAlwaysVisible="false"   value ="#{employeeXLeaveDetailsController.objList}" draggableColumns="true"    var="m"  >
+                
 
-                    <p:column headerText="Leave Period">
-                        <p:commandLink value="#{m.employeeLeaveEntitlement.leavePeriods}"/>                       
+                <p:dataTable id="out" paginator="true"  rows="50"  paginatorAlwaysVisible="false"   value ="#{employeeXLeaveDetailsController.objList}" draggableColumns="true"    var="m"  >
 
-
-
-                    </p:column>
-                    
-                     <p:column headerText="Leave Type">
-                         <p:commandLink value="#{m.employeeLeaveEntitlement.leaveTypes}"/>                       
+                    <p:column headerText="Transaction Date">
+                        <p:commandLink value="#{m.registrationDate}"/>                       
 
 
 
                     </p:column>
-                    
+
+
+                    <p:column headerText="Leave Type">
+                        <p:commandLink value="#{m.employeeLeaveEntitlement.leaveTypes}"/>                       
+
+
+
+                    </p:column>
+
+                    <p:column headerText="Narration">
+                        <p:commandLink value="#{m.reason}"/>                       
+
+
+
+                    </p:column>
+
                     <p:column headerText="Start Date">
                         <p:commandLink value="#{m.startDate}"/>                       
 
@@ -52,16 +64,23 @@
 
 
                     </p:column>
-                    
+
+                    <p:column headerText="Transaction Type">
+                        <p:commandLink value="#{m.transactionType}"/>                       
+
+
+
+                    </p:column>
+
                     <p:column headerText="Leave Days">
                         <p:commandLink value="#{m.leaveDays}"/>                       
 
 
 
                     </p:column>
-                    
-                     <p:column headerText="Status">
-                         <p:commandLink value="#{m.status}"/>                       
+
+                    <p:column headerText="Status">
+                        <p:commandLink value="#{m.status}"/>                       
 
 
 

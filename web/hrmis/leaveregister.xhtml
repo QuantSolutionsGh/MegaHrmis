@@ -1,0 +1,91 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+
+
+    </h:head>
+    <h:body>
+        <ui:composition   template="/templates/commonlayout.xhtml">
+            <ui:define name="content">
+
+                <h:form id="accountGroupForm">
+                    <p:fieldset legend="Leave Register" style="margin-bottom:20px">
+                        <p:messages  id="info" closable="true" autoUpdate="true" />
+                        <h:panelGrid id="tableAccountGroup"  width="75%" columns="2" >
+
+                            <p:outputLabel  for="employee" value="Employee" />
+
+                            <p:selectOneMenu required="true" id="employee" filter="true"   
+                                             effect="fade" filterMatchMode="contains"   
+                                             value="#{employeeXLeaveEntitlementXLeaveDetailsController.employee}"
+
+                                             converter="omnifaces.SelectItemsConverter" >
+                                <p:ajax update="daysOutstanding,submit"  listener="#{employeeXLeaveEntitlementXLeaveDetailsController.calcOutstandingDays}"/>     
+
+                                <f:selectItem  itemLabel="SELECT..." itemValue="#{employeeXLeaveEntitlementXLeaveDetailsController.employee}" />
+                                <f:selectItems value="#{employeeController.objList}" var="p" itemLabel="#{p}" itemValue="#{p}"/>
+                            </p:selectOneMenu>
+
+
+
+                            <p:outputLabel  for="leaveType" value="Leave Type" />
+
+                            <p:selectOneMenu required="true" id="leaveType" filter="true"   
+                                             effect="fade" filterMatchMode="contains" 
+                                             value="#{employeeXLeaveEntitlementXLeaveDetailsController.leaveType}"
+
+                                             converter="omnifaces.SelectItemsConverter">
+                                <f:selectItem  itemLabel="SELECT..." itemValue="#{employeeXLeaveEntitlementXLeaveDetailsController.leaveType}" />
+                                <f:selectItems value="#{leaveTypesController.objList}" var="p" itemLabel="#{p}" itemValue="#{p}"/>
+                                <p:ajax update="daysOutstanding,submit" listener="#{employeeXLeaveEntitlementXLeaveDetailsController.calcOutstandingDays}"  />
+                            </p:selectOneMenu>
+
+                            <p:outputLabel  for="daysOutstanding" value="Outstanding Days" />
+                            <p:outputLabel id="daysOutstanding"  value="#{employeeXLeaveEntitlementXLeaveDetailsController.outstandingDays}" >
+
+                            </p:outputLabel>                           
+
+
+
+
+                            <p:outputLabel for="purpose" value="Narration" />
+                            <p:inputTextarea required="true" id="purpose" cols="100" value="#{employeeXLeaveEntitlementXLeaveDetailsController.reason}" />
+
+                            <p:outputLabel for="transType" value="Transaction Type"/>
+                            <p:selectOneMenu id="transType"    required="true" value="#{employeeXLeaveEntitlementXLeaveDetailsController.transType}">
+                                <f:selectItem itemLabel="Select..." itemValue=""/>
+                                <f:selectItem itemLabel="Credit" itemValue="C" />
+                                <f:selectItem itemLabel="Debit" itemValue="D"/>                               
+
+                            </p:selectOneMenu>
+                            
+                            <p:outputLabel for="leaveDays" value="Leave Days" />
+                            <p:inputText required="true" id="leaveDays" value="#{employeeXLeaveEntitlementXLeaveDetailsController.leaveDays}" />
+                            
+
+
+
+                            <h:panelGroup/>
+                            <p:commandButton id="submit" value="Post Entry" 
+                                             actionListener="#{employeeXLeaveEntitlementXLeaveDetailsController.postEntry}" />
+
+
+
+
+
+                        </h:panelGrid>
+                    </p:fieldset>
+
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

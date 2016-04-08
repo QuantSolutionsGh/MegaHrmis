@@ -40,6 +40,10 @@
     <class>com.met.hrmis.jpa.entities.TrainingCostItem</class>
     <class>com.met.hrmis.jpa.entities.EmployeeXEntitlementXDetails</class>
     <class>com.met.hrmis.jpa.entities.TerminationReason</class>
+    <class>com.met.hrmis.jpa.entities.EmailConfig</class>
+    <class>com.met.hrmis.jpa.entities.EmpXLeavePlanner</class>
+    <class>com.met.hrmis.jpa.entities.BI_StaffDevelopment</class>
+    <class>com.met.hrmis.jpa.entities.BI_ExitStaff</class>
     <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties>
     </properties>

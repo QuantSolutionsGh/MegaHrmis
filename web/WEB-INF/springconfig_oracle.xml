@@ -22,7 +22,7 @@
     <bean id="dataSource"       destroy-method="close"   class="org.apache.commons.dbcp.BasicDataSource">
         <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
         
-        <property name="url" value="jdbc:oracle:thin:@192.168.1.2:1521:hrmis" />
+        <property name="url" value="jdbc:oracle:thin:@192.168.1.5:1521:hrmis" />
         <property name="username" value="megahrmis" />
         <property name="password" value="megahrmis" />
         <property name="initialSize" value="20" />

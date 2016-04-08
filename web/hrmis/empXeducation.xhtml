@@ -32,8 +32,8 @@
                 <p:calendar id="endDate"  pattern="dd-MM-yyyy"  required="true" value="#{employeeXEducationController.currentElement.endDate}">
                     <f:convertDateTime pattern="dd-MM-yyyy"   />
                 </p:calendar>
-                
-                
+
+
 
                 <p:outputLabel for="level" value="Level Of Education"/>
                 <p:selectOneMenu id="level" filter="true" required="true"  
@@ -49,8 +49,8 @@
 
                 <p:outputLabel for="specialization" value="Specialization"/>
                 <p:inputText id="specialization" value="#{employeeXEducationController.currentElement.specialization}" required="true"/>
-                
-                 <p:outputLabel for="gpa" value="GPA"/>
+
+                <p:outputLabel for="gpa" value="GPA"/>
                 <p:inputText id="gpa" value="#{employeeXEducationController.currentElement.gpa}" required="true"/>
 
 
@@ -76,6 +76,13 @@
 
         </h:form>
 
+        <p:confirmDialog global="true">
+            <p:commandButton value="Yes"  type="button" styleClass="ui-confirmdialog-yes"
+                             icon="ui-icon-check"/>
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no"
+                             icon="ui-icon-close"/>
+        </p:confirmDialog>
+
 
 
         <h:form id="accountGroupForm" rendered="#{employeeXEducationController.activeTab=='showAll'}"  >
@@ -97,33 +104,36 @@
                     <p:column headerText="Period From">
                         <p:commandLink value="#{m.startDate}"/>
                     </p:column>
-                    
+
                     <p:column headerText="Period To">
                         <p:commandLink value="#{m.endDate}"/>
                     </p:column>
-                    
+
                     <p:column headerText="Institute">
                         <p:commandLink value="#{m.institute}"/>
                     </p:column>
-                    
+
                     <p:column headerText="Level">
                         <p:commandLink value="#{m.education.levelOfEducation}"/>
                     </p:column>
-                    
-                     <p:column headerText="GPA">
+
+                    <p:column headerText="GPA">
                         <p:commandLink value="#{m.gpa}"/>
-                     </p:column>
+                    </p:column>
 
                     <p:column>
                         <h:panelGroup>
-                            <p:commandLink value="Edit" process="@this" update="@all" actionListener="#{employeeXEducationController.doEdit(m)}">
-
+                            <p:commandLink  process="@this" update="@all" actionListener="#{employeeXEducationController.doEdit(m)}">
+                                <p:graphicImage  value="/templates/edit.png" />
 
 
                             </p:commandLink>
 
                             <p:spacer width="10"/>
-                            <p:commandLink value="Delete" process="@this" update="@all" actionListener="#{employeeXEducationController.doDelete(m.id)}"/>
+                            <p:commandLink  process="@this" update="@all" 
+                                            actionListener="#{employeeXEducationController.doDelete(m.id)}">
+                                <p:graphicImage  value="/templates/delete.png" />
+                            </p:commandLink>
                         </h:panelGroup>
 
                     </p:column>
